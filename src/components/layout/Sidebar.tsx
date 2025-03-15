@@ -13,12 +13,15 @@ import {
   BarChart3,
   MessageCircleQuestion,
   HelpCircle,
-  LogOut
+  LogOut,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   isOpen: boolean;
+  toggleSidebar: () => void;
 }
 
 interface NavItem {
@@ -27,29 +30,33 @@ interface NavItem {
   icon: JSX.Element;
 }
 
-const Sidebar = ({ isOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const location = useLocation();
   const [navItems] = useState<NavItem[]>([
     { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Medical Profile', path: '/profile', icon: <UserRound size={20} /> },
-    { name: 'Medical Records', path: '/records', icon: <FileText size={20} /> },
-    { name: 'Medications', path: '/medications', icon: <Pill size={20} /> },
-    { name: 'Appointments', path: '/appointments', icon: <Calendar size={20} /> },
-    { name: 'Health Metrics', path: '/metrics', icon: <BarChart3 size={20} /> },
-    { name: 'Access Control', path: '/access', icon: <ShieldCheck size={20} /> },
-    { name: 'Emergency QR', path: '/emergency', icon: <QrCode size={20} /> },
+    { name: 'Perfil Médico', path: '/profile', icon: <UserRound size={20} /> },
+    { name: 'Prontuários', path: '/records', icon: <FileText size={20} /> },
+    { name: 'Medicamentos', path: '/medications', icon: <Pill size={20} /> },
+    { name: 'Consultas', path: '/appointments', icon: <Calendar size={20} /> },
+    { name: 'Métricas de Saúde', path: '/metrics', icon: <BarChart3 size={20} /> },
+    { name: 'Controle de Acesso', path: '/access', icon: <ShieldCheck size={20} /> },
+    { name: 'QR de Emergência', path: '/emergency', icon: <QrCode size={20} /> },
   ]);
   
   const supportItems: NavItem[] = [
-    { name: 'Help Center', path: '/help', icon: <HelpCircle size={20} /> },
-    { name: 'Support', path: '/support', icon: <MessageCircleQuestion size={20} /> },
+    { name: 'Central de Ajuda', path: '/help', icon: <HelpCircle size={20} /> },
+    { name: 'Suporte', path: '/support', icon: <MessageCircleQuestion size={20} /> },
+    { name: 'Gerenciar Acesso', path: '/manage-access', icon: <ShieldCheck size={20} /> },
   ];
 
   return (
     <>
       {/* Overlay for mobile */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/30 z-30 md:hidden" />
+        <div 
+          className="fixed inset-0 bg-black/30 z-30 md:hidden" 
+          onClick={toggleSidebar}
+        />
       )}
       
       {/* Sidebar */}
@@ -60,6 +67,14 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           "md:w-64 w-[250px]"
         )}
       >
+        {/* Toggle button */}
+        <button 
+          onClick={toggleSidebar}
+          className="absolute -right-8 top-24 bg-white dark:bg-gray-900 p-1.5 rounded-r border-y border-r border-gray-200 dark:border-gray-800 hidden md:flex"
+        >
+          {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        </button>
+        
         <div className="h-full flex flex-col px-3 overflow-y-auto">
           <div className="space-y-1 py-2">
             {navItems.map((item) => (
@@ -81,33 +96,39 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                {item.name}
-                
-                {/* Active indicator */}
-                {location.pathname === item.path && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"></span>
+                {isOpen && (
+                  <>
+                    {item.name}
+                    
+                    {/* Active indicator */}
+                    {location.pathname === item.path && (
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    )}
+                  </>
                 )}
               </Link>
             ))}
           </div>
           
-          <div className="mt-4 px-3">
-            <div className="glass-card rounded-lg p-4">
-              <div className="flex items-center text-primary">
-                <Heart size={18} className="mr-2" />
-                <h3 className="text-sm font-medium">Health Status</h3>
-              </div>
-              <div className="mt-2 flex items-center">
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className="bg-medical h-2 rounded-full" style={{ width: '87%' }}></div>
+          {isOpen && (
+            <div className="mt-4 px-3">
+              <div className="glass-card rounded-lg p-4">
+                <div className="flex items-center text-primary">
+                  <Heart size={18} className="mr-2" />
+                  <h3 className="text-sm font-medium">Status de Saúde</h3>
                 </div>
-                <span className="ml-2 text-xs font-medium">87%</span>
-              </div>
-              <div className="mt-2 text-xs text-gray-500">
-                Last updated: Today, 9:45 AM
+                <div className="mt-2 flex items-center">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div className="bg-medical h-2 rounded-full" style={{ width: '87%' }}></div>
+                  </div>
+                  <span className="ml-2 text-xs font-medium">87%</span>
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  Atualizado: Hoje, 9:45
+                </div>
               </div>
             </div>
-          </div>
+          )}
           
           <div className="mt-auto pb-6 pt-4 space-y-1">
             {supportItems.map((item) => (
@@ -129,7 +150,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                {item.name}
+                {isOpen && item.name}
               </Link>
             ))}
             
@@ -137,7 +158,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <span className="inline-flex items-center justify-center mr-3 text-gray-500 dark:text-gray-400">
                 <LogOut size={20} />
               </span>
-              Sign Out
+              {isOpen && "Sair"}
             </button>
           </div>
         </div>

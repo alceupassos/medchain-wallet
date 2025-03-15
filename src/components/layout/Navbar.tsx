@@ -1,122 +1,92 @@
 
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, Bell, User, Settings } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Bell,
+  Menu,
+  Moon,
+  Search,
+  Settings,
+  Sun,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NavbarProps {
   toggleSidebar: () => void;
 }
 
 const Navbar = ({ toggleSidebar }: NavbarProps) => {
-  const location = useLocation();
-  const isMobile = useIsMobile();
-  const [scrolled, setScrolled] = useState(false);
-  const [notificationCount] = useState(3); // Replace with actual notification logic
+  const [isDark, setIsDark] = useState(false);
   
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Page title based on current route
-  const getPageTitle = () => {
-    const path = location.pathname;
-    if (path === '/') return 'Welcome';
-    if (path === '/dashboard') return 'Dashboard';
-    if (path === '/profile') return 'Medical Profile';
-    if (path === '/records') return 'Medical Records';
-    if (path === '/access') return 'Access Control';
-    if (path === '/emergency') return 'Emergency Access';
-    return path.charAt(1).toUpperCase() + path.slice(2).replace(/-/g, ' ');
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle('dark');
   };
 
   return (
-    <header 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-30 px-4 py-3 transition-all duration-200",
-        scrolled ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-sm" : "bg-transparent"
-      )}
-    >
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+    <header className="fixed w-full h-16 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4">
+      <div className="flex h-full items-center justify-between">
         <div className="flex items-center">
-          {!location.pathname.includes('/onboarding') && (
-            <button 
-              onClick={toggleSidebar} 
-              className="p-2 mr-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle sidebar"
-            >
-              <Menu size={20} />
-            </button>
-          )}
+          <button
+            type="button"
+            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 mr-2"
+            onClick={toggleSidebar}
+          >
+            <Menu size={20} />
+            <span className="sr-only">Abrir menu</span>
+          </button>
           
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <div className="relative">
-                <div className="w-8 h-8 bg-medical rounded-lg flex items-center justify-center text-white font-bold">
-                  M
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-medical-accent rounded-full"></div>
-                </div>
-              </div>
-              <span className="ml-2 font-display font-semibold text-lg text-gray-900 dark:text-white">
-                MedChain
-              </span>
-            </Link>
+          <Link to="/dashboard" className="flex items-center space-x-2">
+            <span className="hidden md:inline-block text-xl font-bold bg-gradient-to-r from-primary to-medical bg-clip-text text-transparent">
+              MedSecure
+            </span>
+          </Link>
+        </div>
+
+        <div className="flex-1 max-w-xl mx-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -mt-2 h-4 w-4 text-gray-500 dark:text-gray-400" />
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              className="w-full bg-gray-100 dark:bg-gray-800 pl-10 pr-4 py-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+            />
           </div>
         </div>
-        
-        {!location.pathname.includes('/onboarding') && (
-          <h1 className="text-xl font-display font-medium hidden md:block">
-            {getPageTitle()}
-          </h1>
-        )}
-        
-        <div className="flex items-center space-x-1">
-          {!location.pathname.includes('/onboarding') && (
-            <>
-              <button 
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
-                aria-label="Notifications"
-              >
-                <Bell size={20} />
-                {notificationCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 flex items-center justify-center transform translate-x-1 -translate-y-1">
-                    {notificationCount}
-                  </span>
-                )}
-              </button>
-              
-              <button 
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Settings"
-              >
-                <Settings size={20} />
-              </button>
-            </>
-          )}
-          
-          <Link 
-            to="/profile" 
-            className="flex items-center p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+
+        <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 relative"
           >
-            <div className="w-7 h-7 rounded-full flex items-center justify-center bg-muted overflow-hidden">
-              <User size={16} />
-            </div>
-            {!isMobile && !location.pathname.includes('/onboarding') && (
-              <span className="ml-2 text-sm font-medium">John Doe</span>
-            )}
+            <Bell size={20} />
+            <span className="sr-only">Notificações</span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          
+          <button
+            type="button"
+            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+            onClick={toggleTheme}
+          >
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            <span className="sr-only">Alternar tema</span>
+          </button>
+          
+          <Link
+            to="/settings"
+            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <Settings size={20} />
+            <span className="sr-only">Configurações</span>
           </Link>
+          
+          <button
+            type="button"
+            className="ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+          >
+            JS
+          </button>
         </div>
       </div>
     </header>

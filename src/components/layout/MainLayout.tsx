@@ -1,27 +1,24 @@
 
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   
-  const toggleSidebar = () => {
-    setIsSidebarOpen(prev => !prev);
-  };
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="h-screen flex flex-col dark">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-gray-950">
       <Navbar toggleSidebar={toggleSidebar} />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar isOpen={isSidebarOpen} />
-        <main className="flex-1 overflow-auto bg-background">
-          {children}
-        </main>
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      
+      <div className={`transition-all duration-300 ease-in-out ${sidebarOpen ? 'md:ml-64' : ''}`}>
+        {children}
       </div>
     </div>
   );
