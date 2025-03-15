@@ -35,26 +35,26 @@ const AuthSidebar = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            <div className="glass-card bg-white/10 p-4 rounded-lg text-left">
-              <div className="flex items-center">
-                <div className="rounded-full bg-white/20 p-2 mr-3">
-                  <Shield size={16} />
+            <div className="glass-card backdrop-blur-md bg-white/10 p-6 rounded-xl text-left border border-white/20 shadow-lg">
+              <div className="flex items-start">
+                <div className="rounded-full bg-white/20 p-3 mr-4">
+                  <Shield size={20} />
                 </div>
                 <div>
-                  <h3 className="font-medium">Secure & Private</h3>
-                  <p className="text-sm text-white/80">Your data is encrypted and only accessible with your permission</p>
+                  <h3 className="font-semibold text-lg mb-1">Segurança Blockchain</h3>
+                  <p className="text-sm text-white/90">Seus dados são criptografados e acessíveis apenas com sua permissão</p>
                 </div>
               </div>
             </div>
             
-            <div className="glass-card bg-white/10 p-4 rounded-lg text-left">
-              <div className="flex items-center">
-                <div className="rounded-full bg-white/20 p-2 mr-3">
-                  <FileText size={16} />
+            <div className="glass-card backdrop-blur-md bg-white/10 p-6 rounded-xl text-left border border-white/20 shadow-lg">
+              <div className="flex items-start">
+                <div className="rounded-full bg-white/20 p-3 mr-4">
+                  <FileText size={20} />
                 </div>
                 <div>
-                  <h3 className="font-medium">Complete Control</h3>
-                  <p className="text-sm text-white/80">Manage all your medical records in one secure place</p>
+                  <h3 className="font-semibold text-lg mb-1">Controle Completo</h3>
+                  <p className="text-sm text-white/90">Gerencie todos os seus registros médicos em um único lugar seguro</p>
                 </div>
               </div>
             </div>

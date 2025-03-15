@@ -46,7 +46,7 @@ const AuthFormContainer = ({ onComplete }: AuthFormContainerProps) => {
     <div className="min-h-screen flex flex-col md:flex-row">
       <AuthSidebar />
       
-      <div className="md:w-1/2 flex flex-col justify-center p-6 md:p-10 lg:p-16">
+      <div className="md:w-1/2 flex flex-col justify-center p-6 md:p-10 lg:p-16 bg-gradient-to-b from-background to-background/95">
         <div className="w-full max-w-md mx-auto">
           {isLogin ? (
             <AuthLogin 

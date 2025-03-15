@@ -70,6 +70,10 @@
     @apply bg-gradient-to-br from-orange-600 to-orange-500;
   }
   
+  .text-gradient-medical {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
   .animate-fade-in {
     @apply animate-in fade-in duration-500;
   }
