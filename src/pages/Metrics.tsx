@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,7 +9,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { AreaChart, BarChart, LineChart } from "recharts";
 import { 
   Activity, 
   AlertCircle, 
@@ -22,9 +22,46 @@ import {
 import HealthMetric from "@/components/ui/HealthMetric";
 import { ResponsiveContainer, Area, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 
+// Sample data for charts
+const bloodPressureData = [
+  { date: 'Jun 1', systolic: 135, diastolic: 85 },
+  { date: 'Jun 8', systolic: 130, diastolic: 83 },
+  { date: 'Jun 15', systolic: 128, diastolic: 80 },
+  { date: 'Jun 22', systolic: 125, diastolic: 78 },
+  { date: 'Jun 29', systolic: 122, diastolic: 79 },
+  { date: 'Jul 6', systolic: 120, diastolic: 80 },
+];
+
+const glucoseData = [
+  { date: 'Jun 1', glucose: 115 },
+  { date: 'Jun 8', glucose: 110 },
+  { date: 'Jun 15', glucose: 112 },
+  { date: 'Jun 22', glucose: 108 },
+  { date: 'Jun 29', glucose: 107 },
+  { date: 'Jul 6', glucose: 105 },
+];
+
+const heartRateData = [
+  { date: 'Jun 1', rest: 75, activity: 120 },
+  { date: 'Jun 8', rest: 74, activity: 125 },
+  { date: 'Jun 15', rest: 73, activity: 128 },
+  { date: 'Jun 22', rest: 72, activity: 130 },
+  { date: 'Jun 29', rest: 71, activity: 132 },
+  { date: 'Jul 6', rest: 72, activity: 135 },
+];
+
+const weightData = [
+  { date: 'Jun 1', weight: 78.5 },
+  { date: 'Jun 8', weight: 78.0 },
+  { date: 'Jun 15', weight: 77.5 },
+  { date: 'Jun 22', weight: 77.0 },
+  { date: 'Jun 29', weight: 76.5 },
+  { date: 'Jul 6', weight: 76.0 },
+];
+
 const Metrics = () => {
   const [timeRange, setTimeRange] = useState("7d");
-  const [selectedMetricType, setSelectedMetricType] = useState(null);
+  const [selectedMetricType, setSelectedMetricType] = useState<string | null>(null);
 
   const addForm = useForm({
     defaultValues: {
@@ -32,8 +69,19 @@ const Metrics = () => {
       value: null,
       date: null,
       notes: null,
+      systolic: null,
+      diastolic: null,
     },
   });
+
+  useEffect(() => {
+    // Update selectedMetricType when the form value changes
+    const subscription = addForm.watch((value) => {
+      setSelectedMetricType(value.metricType);
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [addForm]);
 
   const onAddMetric = (data) => {
     console.log(data);
@@ -211,7 +259,7 @@ const Metrics = () => {
             value="120/80" 
             unit="mmHg"
             status="normal"
-            change="-5"
+            change={{ value: "-5", direction: "down" }}
             icon={<Heart className="h-4 w-4" />}
           />
           
@@ -220,7 +268,7 @@ const Metrics = () => {
             value="105" 
             unit="mg/dL"
             status="warning"
-            change="+8"
+            change={{ value: "+8", direction: "up" }}
             icon={<Activity className="h-4 w-4" />}
           />
           
@@ -229,7 +277,7 @@ const Metrics = () => {
             value="72" 
             unit="bpm"
             status="normal"
-            change="-3"
+            change={{ value: "-3", direction: "down" }}
             icon={<TrendingDown className="h-4 w-4" />}
           />
         </div>
