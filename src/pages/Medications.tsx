@@ -152,7 +152,7 @@ const Medications = () => {
             </TabsContent>
             
             <TabsContent value="calendario">
-              <MedicationCalendar medications={medications} />
+              <MedicationCalendar />
             </TabsContent>
             
             <TabsContent value="lembretes">

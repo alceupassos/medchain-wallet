@@ -92,10 +92,10 @@ const MedicationCalendar = () => {
             locale={ptBR}
             className="rounded-md border"
             components={{
-              DayContent: (props) => (
+              DayContent: ({ date }) => (
                 <div className="relative w-full h-full">
-                  {props.children}
-                  {renderDayContent(props.date)}
+                  <div>{date.getDate()}</div>
+                  {renderDayContent(date)}
                 </div>
               )
             }}

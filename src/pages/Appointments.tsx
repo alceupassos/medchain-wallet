@@ -8,8 +8,45 @@ import AppointmentCalendar from '@/components/appointments/AppointmentCalendar';
 import AppointmentPreparation from '@/components/appointments/AppointmentPreparation';
 import AppointmentMap from '@/components/appointments/AppointmentMap';
 
+// Sample appointment data
+const appointments = [
+  {
+    id: "apt1",
+    date: "15/06/2023",
+    time: "14:00",
+    doctor: "Dra. Maria Silva",
+    specialty: "Cardiologia",
+    location: "Clínica Saúde Total",
+    type: "Presencial" as const,
+    status: "Agendada" as const
+  },
+  {
+    id: "apt2",
+    date: "22/06/2023",
+    time: "10:30",
+    doctor: "Dr. Carlos Mendes",
+    specialty: "Endocrinologia",
+    location: "Hospital São Lucas",
+    type: "Presencial" as const,
+    status: "Agendada" as const
+  },
+  {
+    id: "apt3",
+    date: "05/07/2023",
+    time: "09:15",
+    doctor: "Dr. Paulo Ribeiro",
+    specialty: "Neurologia",
+    location: "Centro Médico Paulista",
+    type: "Telemedicina" as const,
+    status: "Agendada" as const
+  }
+];
+
 const Appointments = () => {
   const [activeTab, setActiveTab] = useState("list");
+  
+  // Get the next appointment for the preparation tab
+  const nextAppointment = appointments.find(apt => apt.status === "Agendada") || appointments[0];
 
   return (
     <MainLayout>
@@ -40,7 +77,7 @@ const Appointments = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <AppointmentList />
+                <AppointmentList appointments={appointments} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -54,7 +91,7 @@ const Appointments = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <AppointmentCalendar />
+                <AppointmentCalendar appointments={appointments} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -68,7 +105,7 @@ const Appointments = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <AppointmentPreparation />
+                <AppointmentPreparation nextAppointment={nextAppointment} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -82,7 +119,7 @@ const Appointments = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <AppointmentMap />
+                <AppointmentMap appointments={appointments} />
               </CardContent>
             </Card>
           </TabsContent>
