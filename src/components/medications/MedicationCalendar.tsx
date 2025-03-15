@@ -1,38 +1,90 @@
 
 import { useState } from 'react';
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { Medication } from '@/components/profile/types';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-interface MedicationCalendarProps {
-  medications: Medication[];
+interface Medication {
+  id: string;
+  name: string;
+  dates: Date[];
+  color: string;
 }
 
-const MedicationCalendar = ({ medications }: MedicationCalendarProps) => {
+const MedicationCalendar = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
-
-  // Create dates with medication counts for calendar highlighting
-  const getDayMedicationCount = (day: Date): number => {
-    return medications.filter(med => 
-      med.status === 'Ativo' || med.status === 'Conforme necessário'
-    ).length;
+  
+  // Example medications data
+  const medications: Medication[] = [
+    { 
+      id: "1", 
+      name: "Losartana 50mg", 
+      dates: [new Date(), new Date(Date.now() + 86400000), new Date(Date.now() + 86400000 * 2)],
+      color: "bg-blue-500"
+    },
+    { 
+      id: "2", 
+      name: "Paracetamol 750mg", 
+      dates: [new Date(), new Date(Date.now() + 86400000 * 3)],
+      color: "bg-red-500"
+    },
+    { 
+      id: "3", 
+      name: "Vitamina D", 
+      dates: [new Date(Date.now() + 86400000), new Date(Date.now() + 86400000 * 7)],
+      color: "bg-yellow-500"
+    },
+  ];
+  
+  // Function to check if a date has medications
+  const hasMedication = (date: Date) => {
+    return medications.some(med => 
+      med.dates.some(medDate => 
+        medDate.getDate() === date.getDate() && 
+        medDate.getMonth() === date.getMonth() && 
+        medDate.getFullYear() === date.getFullYear()
+      )
+    );
   };
-
-  // The selected day's medications
-  const selectedDayMedications = date 
-    ? medications.filter(med => med.status === 'Ativo' || med.status === 'Conforme necessário')
-    : [];
+  
+  // Function to render day content with medication indicators
+  const renderDayContent = (date: Date) => {
+    if (!hasMedication(date)) return null;
+    
+    return (
+      <div className="flex flex-wrap gap-0.5 absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-0.5">
+        {medications.filter(med => 
+          med.dates.some(medDate => 
+            medDate.getDate() === date.getDate() && 
+            medDate.getMonth() === date.getMonth() && 
+            medDate.getFullYear() === date.getFullYear()
+          )
+        ).map((med, idx) => (
+          <div 
+            key={idx} 
+            className={`w-1.5 h-1.5 rounded-full ${med.color}`} 
+            title={med.name}
+          />
+        ))}
+      </div>
+    );
+  };
+  
+  // Get medications for selected date
+  const selectedDateMedications = date ? medications.filter(med => 
+    med.dates.some(medDate => 
+      medDate.getDate() === date.getDate() && 
+      medDate.getMonth() === date.getMonth() && 
+      medDate.getFullYear() === date.getFullYear()
+    )
+  ) : [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card className="md:col-span-1 glass-card">
-        <CardHeader>
-          <CardTitle className="text-xl">Calendário</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-4">
+        <Card className="p-4">
           <Calendar
             mode="single"
             selected={date}
@@ -40,73 +92,43 @@ const MedicationCalendar = ({ medications }: MedicationCalendarProps) => {
             locale={ptBR}
             className="rounded-md border"
             components={{
-              DayContent: ({ day }) => {
-                const count = getDayMedicationCount(day);
-                return (
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    {format(day, 'd')}
-                    {count > 0 && (
-                      <div className="absolute bottom-0 w-full flex justify-center">
-                        <div className={cn(
-                          "h-1 rounded-full",
-                          count >= 5 ? "w-5 bg-medical" : 
-                          count >= 3 ? "w-4 bg-medical/80" : 
-                          "w-3 bg-medical/60"
-                        )}/>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
+              DayContent: (props) => (
+                <div className="relative w-full h-full">
+                  {props.children}
+                  {renderDayContent(props.date)}
+                </div>
+              )
             }}
           />
-        </CardContent>
-      </Card>
-
-      <Card className="md:col-span-2 glass-card">
-        <CardHeader>
-          <CardTitle className="text-xl">
-            Medicamentos para {date ? format(date, "d 'de' MMMM", { locale: ptBR }) : 'Hoje'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {selectedDayMedications.length > 0 ? (
-              selectedDayMedications.map((med, index) => (
-                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between border rounded-lg p-4">
+        </Card>
+        
+        <Card className="p-4">
+          <h3 className="font-medium mb-2">
+            {date ? format(date, "d 'de' MMMM", {locale: ptBR}) : "Selecione uma data"}
+          </h3>
+          
+          {selectedDateMedications.length > 0 ? (
+            <div className="space-y-3">
+              {selectedDateMedications.map((med) => (
+                <div key={med.id} className="flex items-center p-2 rounded-md bg-muted">
+                  <div className={`w-3 h-3 rounded-full ${med.color} mr-3`} />
                   <div className="flex-1">
-                    <div className="font-medium">{med.name} - {med.dose}</div>
-                    <div className="text-sm text-muted-foreground">{med.frequency}</div>
+                    <div className="font-medium text-sm">{med.name}</div>
+                    <div className="text-xs text-muted-foreground">Horários programados</div>
                   </div>
-                  
-                  <div className="flex flex-col sm:items-end mt-2 sm:mt-0">
-                    <div className="text-sm font-medium">
-                      {med.nextDose?.split(', ')[1] || '08:00'}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {med.instructions?.split(', ')[0] || 'Sem instruções específicas'}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center mt-3 sm:mt-0 sm:ml-3">
-                    <button className="flex items-center justify-center w-8 h-8 rounded-full bg-medical/10 text-medical hover:bg-medical/20 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 12l5 5l10 -10"></path>
-                      </svg>
-                    </button>
-                  </div>
+                  <Badge variant="outline" className="ml-auto">
+                    Ver detalhes
+                  </Badge>
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">
-                  Não há medicamentos agendados para {date ? format(date, "d 'de' MMMM", { locale: ptBR }) : 'hoje'}.
-                </p>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-muted-foreground">
+              Nenhum medicamento programado para esta data.
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
   );
 };

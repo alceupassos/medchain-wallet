@@ -11,11 +11,11 @@ import Profile from "./pages/Profile";
 import Records from "./pages/Records";
 import Medications from "./pages/Medications";
 import Access from "./pages/Access";
+import Metrics from "./pages/Metrics";
+import Appointments from "./pages/Appointments";
+import Emergency from "./pages/Emergency";
 
 // Create placeholder components for routes that don't have dedicated pages yet
-const AppointmentsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Consultas</h1><p>Conteúdo da página de consultas estará disponível em breve.</p></div>;
-const MetricsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Métricas de Saúde</h1><p>Conteúdo da página de métricas de saúde estará disponível em breve.</p></div>;
-const EmergencyPage = () => <div className="p-4"><h1 className="text-2xl font-bold">QR de Emergência</h1><p>Conteúdo da página de QR de emergência estará disponível em breve.</p></div>;
 const HelpPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Central de Ajuda</h1><p>Conteúdo da central de ajuda estará disponível em breve.</p></div>;
 const SupportPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Suporte</h1><p>Conteúdo da página de suporte estará disponível em breve.</p></div>;
 const ManageAccessPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Gerenciar Acesso</h1><p>Conteúdo da página de gerenciamento de acesso estará disponível em breve.</p></div>;
@@ -35,10 +35,10 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/records" element={<Records />} />
             <Route path="/medications" element={<Medications />} />
-            <Route path="/appointments" element={<AppointmentsPage />} />
-            <Route path="/metrics" element={<MetricsPage />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/metrics" element={<Metrics />} />
             <Route path="/access" element={<Access />} />
-            <Route path="/emergency" element={<EmergencyPage />} />
+            <Route path="/emergency" element={<Emergency />} />
             <Route path="/help" element={<HelpPage />} />
             <Route path="/support" element={<SupportPage />} />
             <Route path="/manage-access" element={<ManageAccessPage />} />
