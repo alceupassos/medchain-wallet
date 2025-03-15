@@ -35,14 +35,14 @@ const ProfileCard = ({ sections, className }: ProfileCardProps) => {
   return (
     <div className={cn("glass-card rounded-xl overflow-hidden", className)}>
       <div className="p-5 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
-        <h3 className="text-lg font-medium">Medical Profile</h3>
+        <h3 className="text-lg font-medium">Perfil Médico</h3>
         <AppButton 
           variant="outline" 
           size="sm"
           icon={<Pencil size={14} />}
           iconPosition="left"
         >
-          Edit Profile
+          Editar Perfil
         </AppButton>
       </div>
       
@@ -78,12 +78,12 @@ const ProfileCard = ({ sections, className }: ProfileCardProps) => {
                         ))}
                         <button className="text-xs text-primary flex items-center mt-1">
                           <Plus size={12} className="mr-1" />
-                          Add {field.label}
+                          Adicionar {field.label}
                         </button>
                       </div>
                     ) : (
                       <div className="text-sm font-medium">
-                        {field.value || <span className="text-gray-400 italic">Not specified</span>}
+                        {field.value || <span className="text-gray-400 italic">Não especificado</span>}
                       </div>
                     )}
                   </div>
