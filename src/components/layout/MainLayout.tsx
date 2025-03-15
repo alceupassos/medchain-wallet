@@ -8,7 +8,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -17,8 +17,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       
-      <div className={`transition-all duration-300 ease-in-out ${sidebarOpen ? 'md:ml-64' : ''}`}>
-        {children}
+      <div className={`transition-all duration-300 ease-in-out pt-16 ${sidebarOpen ? 'md:ml-64' : ''}`}>
+        <div className="p-4 md:p-6">
+          {children}
+        </div>
       </div>
     </div>
   );

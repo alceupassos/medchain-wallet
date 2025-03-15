@@ -15,7 +15,8 @@ import {
   HelpCircle,
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Key
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -46,7 +47,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const supportItems: NavItem[] = [
     { name: 'Central de Ajuda', path: '/help', icon: <HelpCircle size={20} /> },
     { name: 'Suporte', path: '/support', icon: <MessageCircleQuestion size={20} /> },
-    { name: 'Gerenciar Acesso', path: '/manage-access', icon: <ShieldCheck size={20} /> },
+    { name: 'Gerenciar Acesso', path: '/manage-access', icon: <Key size={20} /> },
   ];
 
   return (
