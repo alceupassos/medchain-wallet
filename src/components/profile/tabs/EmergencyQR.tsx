@@ -1,8 +1,7 @@
-
 import { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import AppButton from '@/components/ui/AppButton';
-import { QRCode } from 'qrcode.react';
+import QRCode from 'qrcode.react';
 
 const EmergencyQR = () => {
   const [qrCodeGenerated, setQrCodeGenerated] = useState(false);
@@ -10,7 +9,6 @@ const EmergencyQR = () => {
   
   const handleGenerateQrCode = () => {
     setQrCodeGenerated(true);
-    // Generate access code
     setAccessCode("MED-" + Math.random().toString(36).substring(2, 10).toUpperCase());
   };
 
