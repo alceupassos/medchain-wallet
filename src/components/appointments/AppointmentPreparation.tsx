@@ -1,10 +1,9 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Record, MicrophoneOff, MessageSquarePlus, Calendar, Clock } from "lucide-react";
+import { FileText, MicOff, MessageSquarePlus, Calendar, Clock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 interface Appointment {
@@ -173,14 +172,14 @@ const AppointmentPreparation = ({ nextAppointment }: AppointmentPreparationProps
               
               <div className="rounded-lg border border-gray-200 dark:border-gray-800 p-4">
                 <div className="flex items-center mb-3">
-                  <MicrophoneOff size={20} className="text-gray-500 dark:text-gray-400 mr-2" />
+                  <MicOff size={20} className="text-gray-500 dark:text-gray-400 mr-2" />
                   <h4 className="font-medium">Gravação desativada</h4>
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
                   Lembre-se de obter consentimento verbal do profissional de saúde antes de iniciar qualquer gravação.
                 </p>
                 <Button variant="outline" className="w-full">
-                  <Record size={16} className="mr-2 text-red-500" />
+                  <FileText size={16} className="mr-2 text-red-500" />
                   Configurar Gravação
                 </Button>
               </div>
