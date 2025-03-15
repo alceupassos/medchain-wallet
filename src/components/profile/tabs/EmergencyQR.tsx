@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import AppButton from '@/components/ui/AppButton';
+import QRCode from 'qrcode.react';
 
 const EmergencyQR = () => {
   const [qrCodeGenerated, setQrCodeGenerated] = useState(false);
@@ -9,7 +10,7 @@ const EmergencyQR = () => {
   
   const handleGenerateQrCode = () => {
     setQrCodeGenerated(true);
-    // Simulação de código de acesso
+    // Generate access code
     setAccessCode("MED-" + Math.random().toString(36).substring(2, 10).toUpperCase());
   };
 
@@ -26,10 +27,14 @@ const EmergencyQR = () => {
         <div className="border border-border rounded-lg p-5">
           {qrCodeGenerated ? (
             <div className="flex flex-col items-center space-y-3">
-              <div className="w-48 h-48 bg-white flex items-center justify-center">
-                <div className="bg-black w-36 h-36 flex items-center justify-center text-white">
-                  QR Code Simulado
-                </div>
+              <div className="w-48 h-48 bg-white flex items-center justify-center p-2">
+                <QRCode
+                  value={`https://medchain.app/emergency-access/${accessCode}`}
+                  size={180}
+                  level="H"
+                  includeMargin={true}
+                  renderAs="svg"
+                />
               </div>
               
               <div className="text-center">

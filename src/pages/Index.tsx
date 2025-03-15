@@ -23,6 +23,15 @@ const Index = () => {
   
   return (
     <div className="min-h-screen dark">
+      <div className="absolute top-6 left-6 z-10 flex items-center">
+        <img 
+          src="/lovable-uploads/f328f86f-9e20-428c-b571-91f861610d33.png" 
+          alt="MedChain Logo" 
+          className="h-12 w-auto"
+        />
+        <span className="ml-2 text-xl font-bold text-white">MedChain</span>
+      </div>
+      
       {step === 'onboarding' ? (
         <OnboardingSlides onComplete={handleOnboardingComplete} />
       ) : (
