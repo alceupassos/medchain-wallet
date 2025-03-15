@@ -37,8 +37,13 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           </button>
           
           <Link to="/dashboard" className="flex items-center space-x-2">
-            <span className="hidden md:inline-block text-xl font-bold bg-gradient-to-r from-primary to-medical bg-clip-text text-transparent">
-              MedSecure
+            <img 
+              src="/lovable-uploads/f328f86f-9e20-428c-b571-91f861610d33.png" 
+              alt="MedChain Logo" 
+              className="h-10 w-auto"
+            />
+            <span className="hidden md:inline-block text-xl font-bold text-primary">
+              MedChain
             </span>
           </Link>
         </div>

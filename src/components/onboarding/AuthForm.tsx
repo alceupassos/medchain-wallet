@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Shield, FileText } from 'lucide-react';
@@ -59,8 +58,15 @@ const AuthForm = ({ onComplete }: AuthFormProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              <h1 className="text-4xl font-display font-semibold mb-4">MedChain</h1>
-              <p className="text-xl mb-6">Your secure blockchain-powered medical wallet</p>
+              <div className="flex flex-col items-center mb-6">
+                <img 
+                  src="/lovable-uploads/f328f86f-9e20-428c-b571-91f861610d33.png"
+                  alt="MedChain Logo"
+                  className="w-32 mb-3"
+                />
+                <h1 className="text-4xl font-display font-semibold">MedChain</h1>
+                <p className="text-xl mt-2">Sua saúde, sua chave, nosso cofre</p>
+              </div>
             </motion.div>
             
             <motion.div 
@@ -105,9 +111,11 @@ const AuthForm = ({ onComplete }: AuthFormProps) => {
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center mb-2 md:hidden">
-              <div className="w-10 h-10 bg-medical rounded-lg flex items-center justify-center text-white font-bold mr-2">
-                M
-              </div>
+              <img 
+                src="/lovable-uploads/f328f86f-9e20-428c-b571-91f861610d33.png"
+                alt="MedChain Logo"
+                className="w-10 h-10 mr-2"
+              />
               <h1 className="text-2xl font-display font-semibold">MedChain</h1>
             </div>
             

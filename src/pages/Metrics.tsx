@@ -1,4 +1,14 @@
-
+import { 
+  Activity, 
+  AlertCircle, 
+  BarChart4, 
+  CheckCircle, 
+  Heart, 
+  LineChart, 
+  Plus, 
+  TrendingDown, 
+  TrendingUp 
+} from 'lucide-react';
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
