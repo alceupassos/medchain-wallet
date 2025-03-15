@@ -1,145 +1,167 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useState } from 'react';
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, CheckCircle2, HelpCircle, Search, Shield } from "lucide-react";
-import { Medication } from "@/components/profile/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Medication } from '@/components/profile/types';
+import { Search, AlertTriangle, AlertCircle, Info } from 'lucide-react';
+import AppButton from '@/components/ui/AppButton';
 
 interface MedicationInteractionsProps {
   medications: Medication[];
 }
 
+interface Interaction {
+  id: string;
+  medicationA: string;
+  medicationB: string;
+  severity: 'Alta' | 'Média' | 'Baixa';
+  description: string;
+}
+
 const MedicationInteractions = ({ medications }: MedicationInteractionsProps) => {
-  // Simulated interaction data
-  const interactions = [
-    { 
-      id: 1, 
-      med1: "Lisinopril", 
-      med2: "Metformina", 
-      severity: "Baixa", 
-      description: "Pode causar hipoglicemia. Monitorar níveis de açúcar no sangue." 
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Sample interaction data
+  const interactions: Interaction[] = [
+    {
+      id: 'int1',
+      medicationA: 'Lisinopril',
+      medicationB: 'Metformina',
+      severity: 'Baixa',
+      description: 'Pode haver uma pequena redução no efeito hipoglicêmico. Monitorar níveis de açúcar no sangue.'
     },
-    { 
-      id: 2, 
-      med1: "Lisinopril", 
-      med2: "Atorvastatina", 
-      severity: "Média", 
-      description: "Pode aumentar o risco de efeitos musculares adversos. Informe ao médico se sentir dor muscular." 
+    {
+      id: 'int2',
+      medicationA: 'Lisinopril',
+      medicationB: 'Ibuprofeno',
+      severity: 'Média',
+      description: 'O uso conjunto pode reduzir o efeito anti-hipertensivo e aumentar o risco de dano renal. Considere alternativas.'
     },
+    {
+      id: 'int3',
+      medicationA: 'Atorvastatina',
+      medicationB: 'Metformina',
+      severity: 'Baixa',
+      description: 'Interação mínima, sem necessidade de ajuste de dose. Monitorar em caso de sintomas incomuns.'
+    }
   ];
 
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Verificador de Interações</CardTitle>
-          <CardDescription>
-            Verifique possíveis interações entre seus medicamentos atuais ou com novos medicamentos.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2 mb-4">
-            <Input placeholder="Digite o nome de um medicamento" className="flex-1" />
-            <Button>
-              <Search size={16} className="mr-2" />
-              Verificar
-            </Button>
-          </div>
-          
-          <Alert className="mb-4">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Atenção</AlertTitle>
-            <AlertDescription>
-              Esta ferramenta não substitui a orientação médica. Sempre consulte seu médico ou farmacêutico sobre interações medicamentosas.
-            </AlertDescription>
-          </Alert>
-          
-          {interactions.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Medicamentos</TableHead>
-                  <TableHead>Severidade</TableHead>
-                  <TableHead>Descrição</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {interactions.map((interaction) => (
-                  <TableRow key={interaction.id}>
-                    <TableCell>
-                      <div className="font-medium">{interaction.med1}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">+</div>
-                      <div className="font-medium">{interaction.med2}</div>
-                    </TableCell>
-                    <TableCell>
-                      <SeverityBadge severity={interaction.severity} />
-                    </TableCell>
-                    <TableCell>{interaction.description}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <CheckCircle2 className="mx-auto h-12 w-12 text-green-500 dark:text-green-400 mb-3" />
-              <p>Nenhuma interação medicamentosa detectada</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Informações Adicionais</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
-                <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <h4 className="font-medium">Verificação Completa</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Nosso sistema verifica interações com alimentos, suplementos e outros medicamentos.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
-                <HelpCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <h4 className="font-medium">Consulte seu Médico</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Esta ferramenta é informativa. Sempre consulte seu médico antes de iniciar, parar ou mudar medicamentos.
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+  const filteredInteractions = searchTerm
+    ? interactions.filter(interaction => 
+        interaction.medicationA.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        interaction.medicationB.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        interaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : interactions;
 
-const SeverityBadge = ({ severity }: { severity: string }) => {
-  switch (severity) {
-    case "Baixa":
-      return <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">Baixa</Badge>;
-    case "Média":
-      return <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">Média</Badge>;
-    case "Alta":
-      return <Badge className="bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Alta</Badge>;
-    case "Nenhuma":
-      return <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Nenhuma</Badge>;
-    default:
-      return <Badge>{severity}</Badge>;
-  }
+  const getSeverityIcon = (severity: 'Alta' | 'Média' | 'Baixa') => {
+    switch(severity) {
+      case 'Alta':
+        return <AlertTriangle className="h-5 w-5 text-red-500" />;
+      case 'Média':
+        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+      case 'Baixa':
+        return <Info className="h-5 w-5 text-blue-500" />;
+    }
+  };
+
+  const getSeverityClass = (severity: 'Alta' | 'Média' | 'Baixa') => {
+    switch(severity) {
+      case 'Alta':
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
+      case 'Média':
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
+      case 'Baixa':
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+    }
+  };
+
+  return (
+    <Card className="glass-card">
+      <CardHeader className="pb-3">
+        <div className="flex flex-wrap justify-between items-center gap-2">
+          <CardTitle className="text-xl">Interações Medicamentosas</CardTitle>
+          <AppButton 
+            size="sm" 
+            icon={<Search size={16} />} 
+            iconPosition="left"
+          >
+            Verificar Novo Medicamento
+          </AppButton>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-6">
+          <p className="text-sm text-muted-foreground mb-4">
+            Visualize possíveis interações entre seus medicamentos atuais. Esta informação é apenas educativa e não substitui a orientação do seu médico.
+          </p>
+          
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar interações..."
+              className="pl-9"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        
+        {filteredInteractions.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Severidade</TableHead>
+                <TableHead>Medicamentos</TableHead>
+                <TableHead>Descrição</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredInteractions.map((interaction) => (
+                <TableRow key={interaction.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {getSeverityIcon(interaction.severity)}
+                      <span className={`px-2 py-1 rounded text-xs ${getSeverityClass(interaction.severity)}`}>
+                        {interaction.severity}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {interaction.medicationA} + {interaction.medicationB}
+                  </TableCell>
+                  <TableCell>{interaction.description}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground mb-4">
+              {searchTerm 
+                ? 'Nenhuma interação encontrada para a sua busca.' 
+                : 'Não foram detectadas interações entre seus medicamentos atuais.'}
+            </p>
+            <Button variant="outline">Verificar Novamente</Button>
+          </div>
+        )}
+        
+        <div className="mt-6 p-4 bg-primary/5 rounded-lg">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-primary mt-0.5" />
+            <div>
+              <h4 className="text-sm font-medium mb-1">Lembre-se</h4>
+              <p className="text-sm text-muted-foreground">
+                Esta análise é baseada em informações gerais sobre medicamentos. Sempre consulte seu médico ou farmacêutico para uma avaliação personalizada de interações medicamentosas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 };
 
 export default MedicationInteractions;

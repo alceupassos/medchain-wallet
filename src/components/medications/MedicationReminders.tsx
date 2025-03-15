@@ -1,133 +1,154 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import { useState } from 'react';
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bell, Plus } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { TimePicker } from "@/components/medications/TimePicker";
-import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Medication } from '@/components/profile/types';
+import { Bell, BellOff, Clock, Smartphone, Mail, AlertTriangle, Plus } from 'lucide-react';
+import TimePicker from '@/components/medications/TimePicker';
+import AppButton from '@/components/ui/AppButton';
 
-const MedicationReminders = () => {
-  const [reminderEnabled, setReminderEnabled] = useState(true);
-  const [selectedTime, setSelectedTime] = useState("08:00");
+interface MedicationRemindersProps {
+  medications: Medication[];
+}
 
-  // Simulated reminders data
-  const reminders = [
-    { id: 1, medication: "Lisinopril", time: "08:00", active: true, days: "Todos os dias" },
-    { id: 2, medication: "Metformina", time: "13:00", active: true, days: "Todos os dias" },
-    { id: 3, medication: "Metformina", time: "20:00", active: true, days: "Todos os dias" },
-    { id: 4, medication: "Atorvastatina", time: "22:00", active: true, days: "Todos os dias" },
-  ];
+const MedicationReminders = ({ medications }: MedicationRemindersProps) => {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [emailNotifications, setEmailNotifications] = useState(false);
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [reminderTime, setReminderTime] = useState("00:30");
+  const [criticalAlerts, setCriticalAlerts] = useState(true);
+  
+  const activeMedications = medications.filter(
+    med => med.status === 'Ativo' || med.status === 'Conforme necessário'
+  );
 
   return (
-    <div className="space-y-6">
-      <Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Card className="glass-card">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Configuração de Lembretes</CardTitle>
+          <CardTitle className="text-xl">Configurações de Lembretes</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Bell className="h-4 w-4 text-primary" />
+              <Label htmlFor="notifications" className="text-base">Notificações de Medicamentos</Label>
+            </div>
             <Switch 
-              checked={reminderEnabled} 
-              onCheckedChange={setReminderEnabled} 
-              aria-label="Ativar lembretes"
+              id="notifications" 
+              checked={notificationsEnabled}
+              onCheckedChange={setNotificationsEnabled}
             />
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium">Tipo de notificação</label>
-                <select className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 px-3 py-2 text-sm">
-                  <option>Push e SMS</option>
-                  <option>Apenas Push</option>
-                  <option>Apenas SMS</option>
-                  <option>E-mail</option>
-                </select>
+          
+          <div className="space-y-4 pl-6 border-l-2 border-primary/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Smartphone className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="push" className="text-sm">Notificações Push</Label>
               </div>
-              <div>
-                <label className="text-sm font-medium">Som de alerta</label>
-                <select className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 px-3 py-2 text-sm">
-                  <option>Sino</option>
-                  <option>Campainha</option>
-                  <option>Bipe</option>
-                  <option>Vibração</option>
-                </select>
-              </div>
-            </div>
-            
-            <div>
-              <label className="text-sm font-medium">Antecedência do lembrete</label>
-              <select className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 px-3 py-2 text-sm">
-                <option>5 minutos antes</option>
-                <option>15 minutos antes</option>
-                <option>30 minutos antes</option>
-                <option>1 hora antes</option>
-              </select>
-            </div>
-            
-            <div className="flex items-center mt-4 justify-between">
-              <span className="text-sm font-medium">Lembretes repetidos</span>
               <Switch 
-                aria-label="Ativar lembretes repetidos"
+                id="push" 
+                checked={pushNotifications}
+                onCheckedChange={setPushNotifications}
+                disabled={!notificationsEnabled}
               />
             </div>
             
-            <div className="flex items-center mt-2 justify-between">
-              <span className="text-sm font-medium">Relatar automaticamente doses perdidas</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Mail className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="email" className="text-sm">Notificações por Email</Label>
+              </div>
               <Switch 
-                aria-label="Relatar doses perdidas"
+                id="email" 
+                checked={emailNotifications}
+                onCheckedChange={setEmailNotifications}
+                disabled={!notificationsEnabled}
               />
             </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="time" className="text-sm">Tempo de Antecedência</Label>
+              </div>
+              <TimePicker 
+                value={reminderTime} 
+                onChange={setReminderTime}
+                disabled={!notificationsEnabled}
+              />
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="critical" className="text-sm">Alertas Críticos</Label>
+              </div>
+              <Switch 
+                id="critical" 
+                checked={criticalAlerts}
+                onCheckedChange={setCriticalAlerts}
+                disabled={!notificationsEnabled}
+              />
+            </div>
+          </div>
+          
+          <div className="pt-4">
+            <p className="text-sm text-muted-foreground mb-3">
+              Alertas críticos são notificações especiais quando você deixa de tomar medicamentos importantes por mais de 2 horas após o horário programado.
+            </p>
+            <Button 
+              variant="outline" 
+              className="w-full"
+            >
+              Salvar Configurações
+            </Button>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className="glass-card">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Meus Lembretes</CardTitle>
-            <Button size="sm">
-              <Plus size={16} className="mr-2" />
-              Novo Lembrete
-            </Button>
-          </div>
+          <CardTitle className="text-xl">Lembretes Ativos</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Medicamento</TableHead>
-                <TableHead>Horário</TableHead>
-                <TableHead>Dias</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {reminders.map((reminder) => (
-                <TableRow key={reminder.id}>
-                  <TableCell>{reminder.medication}</TableCell>
-                  <TableCell>{reminder.time}</TableCell>
-                  <TableCell>{reminder.days}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className={reminder.active 
-                      ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                      : "bg-gray-50 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400"
-                    }>
-                      {reminder.active ? 'Ativo' : 'Inativo'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">Editar</Button>
-                      <Button variant="ghost" size="sm" className="text-red-500 dark:text-red-400">Remover</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
+          {activeMedications.length > 0 ? (
+            <div className="space-y-3">
+              {activeMedications.map((med, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">{med.name} - {med.dose}</div>
+                    <div className="text-sm text-muted-foreground">{med.nextDose || 'Horário não definido'}</div>
+                  </div>
+                  <Switch defaultChecked={true} />
+                </div>
               ))}
-            </TableBody>
-          </Table>
+              
+              <div className="pt-4">
+                <AppButton 
+                  variant="outline" 
+                  className="w-full"
+                  icon={<Plus size={16} />}
+                  iconPosition="left"
+                >
+                  Adicionar Lembrete Personalizado
+                </AppButton>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-6">
+              <BellOff className="mx-auto h-10 w-10 text-muted-foreground mb-2" />
+              <p className="text-muted-foreground mb-4">
+                Você não tem medicamentos ativos para configurar lembretes.
+              </p>
+              <AppButton>
+                Adicionar Medicamento
+              </AppButton>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
