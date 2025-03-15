@@ -40,7 +40,7 @@ const SummaryCard = ({
         {change && (
           <div className={cn(
             "flex items-center text-xs font-medium px-2 py-1 rounded-full",
-            change.isPositive ? "text-green-700 bg-green-100" : "text-red-700 bg-red-100"
+            change.isPositive ? "text-green-400 bg-green-900/30" : "text-red-400 bg-red-900/30"
           )}>
             <span className="mr-1">{change.isPositive ? '+' : '-'}{change.value}</span>
             <span>
@@ -58,11 +58,11 @@ const SummaryCard = ({
         )}
       </div>
       
-      <h3 className="text-lg font-medium text-gray-700 dark:text-gray-200">{title}</h3>
+      <h3 className="text-lg font-medium text-gray-200">{title}</h3>
       
       <div className="mt-2">
         <div className="text-3xl font-semibold">{value}</div>
-        {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-gray-400 mt-1">{subtitle}</p>}
       </div>
       
       {link && (

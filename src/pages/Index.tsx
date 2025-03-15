@@ -22,7 +22,7 @@ const Index = () => {
   // }, [navigate]);
   
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen dark">
       {step === 'onboarding' ? (
         <OnboardingSlides onComplete={handleOnboardingComplete} />
       ) : (

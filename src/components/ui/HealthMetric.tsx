@@ -54,6 +54,12 @@ const HealthMetric = ({
     )
   };
 
+  const statusLabels = {
+    normal: 'Normal',
+    warning: 'Atenção',
+    critical: 'Crítico'
+  };
+
   return (
     <div className={cn("glass-card rounded-xl p-4 flex flex-col", className)}>
       <div className="flex items-center space-x-2 mb-2 text-gray-500">
@@ -71,7 +77,7 @@ const HealthMetric = ({
           <span className={cn("w-2 h-2 rounded-full mr-2", statusColors[status])}></span>
         )}
         <span className={cn("text-xs", statusColors[status])}>
-          {status === 'normal' ? 'Normal' : status === 'warning' ? 'Warning' : 'Critical'}
+          {statusLabels[status]}
         </span>
         
         {change && (

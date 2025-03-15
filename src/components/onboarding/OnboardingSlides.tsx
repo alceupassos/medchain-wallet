@@ -13,26 +13,26 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
   
   const slides = [
     {
-      title: "Welcome to MedChain",
-      description: "Your secure digital medical wallet powered by blockchain technology. Manage and control all your medical records in one place.",
+      title: "Bem-vindo ao MedChain",
+      description: "Sua carteira médica digital segura, alimentada por tecnologia blockchain. Gerencie e controle todos os seus registros médicos em um só lugar.",
       icon: <Shield size={48} className="text-medical" />,
       image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
     },
     {
-      title: "You Control Your Data",
-      description: "Own your medical information with full control over who has access. Your records are encrypted and only accessible with your permission.",
+      title: "Você Controla Seus Dados",
+      description: "Seja dono de suas informações médicas com controle total sobre quem tem acesso. Seus registros são criptografados e acessíveis apenas com sua permissão.",
       icon: <UserRound size={48} className="text-medical" />,
       image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
     },
     {
-      title: "Seamless Sharing",
-      description: "Securely share your medical records with healthcare providers. Grant temporary access with just a few taps when needed.",
+      title: "Compartilhamento Fácil",
+      description: "Compartilhe seus registros médicos com profissionais de saúde de forma segura. Conceda acesso temporário com apenas alguns toques quando necessário.",
       icon: <Share2 size={48} className="text-medical" />,
       image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
     },
     {
-      title: "Immutable Records",
-      description: "Blockchain technology ensures your medical history cannot be altered or falsified, providing a trusted record of your health journey.",
+      title: "Registros Imutáveis",
+      description: "A tecnologia blockchain garante que seu histórico médico não possa ser alterado ou falsificado, fornecendo um registro confiável de sua jornada de saúde.",
       icon: <FileText size={48} className="text-medical" />,
       image: "https://images.unsplash.com/photo-1563213126-a4273aed2016?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
     }
@@ -51,7 +51,7 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col dark">
       <div className="flex-1 relative overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -69,12 +69,12 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
               <h1 className="text-3xl md:text-4xl font-display font-semibold mb-4">
                 {slides[currentSlide].title}
               </h1>
-              <p className="text-gray-600 dark:text-gray-300 text-lg mb-8">
+              <p className="text-gray-300 text-lg mb-8">
                 {slides[currentSlide].description}
               </p>
             </div>
             
-            <div className="md:w-1/2 h-64 md:h-full bg-gray-100 relative overflow-hidden">
+            <div className="md:w-1/2 h-64 md:h-full bg-gray-900 relative overflow-hidden">
               <img 
                 src={slides[currentSlide].image} 
                 alt={slides[currentSlide].title}
@@ -86,11 +86,11 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
         </AnimatePresence>
       </div>
       
-      <div className="p-6 md:p-10 flex items-center justify-between bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+      <div className="p-6 md:p-10 flex items-center justify-between bg-gray-900 border-t border-gray-800">
         <button
           onClick={prevSlide}
           disabled={currentSlide === 0}
-          className="text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none"
+          className="text-gray-500 hover:text-gray-400 disabled:opacity-50 disabled:pointer-events-none"
         >
           <ArrowLeft size={20} />
         </button>
@@ -101,9 +101,9 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                index === currentSlide ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-700'
+                index === currentSlide ? 'bg-primary' : 'bg-gray-700'
               }`}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={`Ir para slide ${index + 1}`}
             />
           ))}
         </div>
@@ -114,7 +114,7 @@ const OnboardingSlides = ({ onComplete }: OnboardingProps) => {
           icon={<ArrowRight size={16} />}
           iconPosition="right"
         >
-          {currentSlide === slides.length - 1 ? 'Get Started' : 'Next'}
+          {currentSlide === slides.length - 1 ? 'Começar' : 'Próximo'}
         </AppButton>
       </div>
     </div>
