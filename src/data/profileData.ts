@@ -93,11 +93,11 @@ export const medicalRecords = [
   { id: "rec3", date: "15/09/2023", type: "Consulta Cardiologista", doctor: "Dr. Ricardo Mendes", notes: "Eletrocardiograma normal. Recomendação para atividade física." },
 ];
 
-// Dados para medicamentos - updated to include the required 'status' property
+// Dados para medicamentos - updated to include the required 'status' property with correct type
 export const medications = [
-  { id: "med1", name: "Lisinopril", dose: "10mg", frequency: "Uma vez ao dia", startDate: "15/01/2022", endDate: "Contínuo", status: "Ativo" },
-  { id: "med2", name: "Metformina", dose: "500mg", frequency: "Duas vezes ao dia", startDate: "10/03/2022", endDate: "Contínuo", status: "Ativo" },
-  { id: "med3", name: "Atorvastatina", dose: "20mg", frequency: "Uma vez ao dia antes de dormir", startDate: "05/08/2023", endDate: "Contínuo", status: "Ativo" },
+  { id: "med1", name: "Lisinopril", dose: "10mg", frequency: "Uma vez ao dia", startDate: "15/01/2022", endDate: "Contínuo", status: "Ativo" as "Ativo" },
+  { id: "med2", name: "Metformina", dose: "500mg", frequency: "Duas vezes ao dia", startDate: "10/03/2022", endDate: "Contínuo", status: "Ativo" as "Ativo" },
+  { id: "med3", name: "Atorvastatina", dose: "20mg", frequency: "Uma vez ao dia antes de dormir", startDate: "05/08/2023", endDate: "Contínuo", status: "Ativo" as "Ativo" },
 ];
 
 // Dados para consultas
