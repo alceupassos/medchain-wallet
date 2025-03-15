@@ -17,7 +17,23 @@ export interface MedicalRecord {
   date: string;
   type: string;
   doctor: string;
+  specialty?: string;
+  institution?: string;
+  diagnosis?: string;
   notes: string;
+  blockchainVerified?: boolean;
+  attachments?: Array<{
+    id: string;
+    name: string;
+    type: string;
+    url: string;
+  }>;
+  lastModified?: string;
+  accessHistory?: Array<{
+    user: string;
+    date: string;
+    action: string;
+  }>;
 }
 
 export interface Medication {

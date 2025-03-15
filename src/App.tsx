@@ -8,9 +8,9 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
+import Records from "./pages/Records";
 
 // Create placeholder components for routes that don't have dedicated pages yet
-const RecordsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Prontuários</h1><p>Conteúdo da página de prontuários médicos estará disponível em breve.</p></div>;
 const MedicationsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Medicamentos</h1><p>Conteúdo da página de medicamentos estará disponível em breve.</p></div>;
 const AppointmentsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Consultas</h1><p>Conteúdo da página de consultas estará disponível em breve.</p></div>;
 const MetricsPage = () => <div className="p-4"><h1 className="text-2xl font-bold">Métricas de Saúde</h1><p>Conteúdo da página de métricas de saúde estará disponível em breve.</p></div>;
@@ -33,7 +33,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/records" element={<RecordsPage />} />
+            <Route path="/records" element={<Records />} />
             <Route path="/medications" element={<MedicationsPage />} />
             <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/metrics" element={<MetricsPage />} />
