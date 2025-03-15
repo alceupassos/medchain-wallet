@@ -1,27 +1,19 @@
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  Phone, 
-  Video, 
-  Search, 
-  PlusCircle, 
-  Filter, 
-  Calendar as CalendarIcon,
-  CheckCircle, 
-  AlertCircle,
-  FileText,
-  Trash2, 
-  Clock4
-} from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useForm } from "react-hook-form";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon, Clock, FileText, MapPin, Plus, Search, X } from "lucide-react";
 
 const appointments = [
   {
@@ -81,7 +73,7 @@ const appointments = [
   }
 ];
 
-const AppointmentsPage = () => {
+const Appointments = () => {
   const [searchTerm, setSearchTerm] = useState("");
   
   const filteredAppointments = appointments.filter(appt => 
@@ -93,322 +85,256 @@ const AppointmentsPage = () => {
   const futureAppointments = filteredAppointments.filter(appt => appt.status === "Agendada");
   const pastAppointments = filteredAppointments.filter(appt => appt.status !== "Agendada");
 
-  // Próxima consulta
-  const nextAppointment = futureAppointments[0];
+  const upcomingAppointments = futureAppointments.slice(0, 3);
 
-  // Calcular dias para próxima consulta
-  const nextApptDate = nextAppointment ? new Date(`${nextAppointment.date.split('/').reverse().join('-')}T${nextAppointment.time}:00`) : null;
-  const today = new Date();
-  const daysUntil = nextApptDate ? Math.ceil((nextApptDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null;
+  const appointmentForm = useForm({
+    defaultValues: {
+      title: "",
+      specialty: "",
+      doctor: "",
+      date: null,
+      time: "",
+      location: "",
+      notes: ""
+    }
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 md:p-6 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Consultas</h1>
             <p className="text-muted-foreground">
-              Gerencie e acompanhe suas consultas médicas
+              Gerencie suas consultas médicas e procedimentos
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Button className="gap-2">
-              <PlusCircle size={16} />
-              Nova Consulta
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <CalendarIcon size={16} />
-              Ver Calendário
-            </Button>
-          </div>
-        </div>
-
-        {nextAppointment && (
-          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-blue-100 dark:border-blue-900">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xl text-blue-800 dark:text-blue-300">Próxima Consulta</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="col-span-2">
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="flex-shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/60 p-4 w-16 h-16 flex items-center justify-center">
-                      {nextAppointment.type === "Presencial" ? (
-                        <MapPin className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                      ) : (
-                        <Video className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+          <div className="flex items-center gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="gap-1">
+                  <Plus size={16} />
+                  Nova Consulta
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>Agendar Nova Consulta</DialogTitle>
+                  <DialogDescription>
+                    Preencha os detalhes para agendar uma nova consulta
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <Form {...appointmentForm}>
+                  <form onSubmit={appointmentForm.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={appointmentForm.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Título</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Consulta de rotina, exame, etc." />
+                          </FormControl>
+                        </FormItem>
                       )}
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={appointmentForm.control}
+                        name="specialty"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Especialidade</FormLabel>
+                            <Select 
+                              onValueChange={field.onChange} 
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Selecione a especialidade" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="cardiologia">Cardiologia</SelectItem>
+                                <SelectItem value="dermatologia">Dermatologia</SelectItem>
+                                <SelectItem value="endocrinologia">Endocrinologia</SelectItem>
+                                <SelectItem value="neurologia">Neurologia</SelectItem>
+                                <SelectItem value="oftalmologia">Oftalmologia</SelectItem>
+                                <SelectItem value="ortopedia">Ortopedia</SelectItem>
+                                <SelectItem value="pediatria">Pediatria</SelectItem>
+                                <SelectItem value="psiquiatria">Psiquiatria</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={appointmentForm.control}
+                        name="doctor"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Médico</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Dr. Nome do Médico" />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                     </div>
                     
-                    <div>
-                      <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300">
-                        {nextAppointment.doctor} - {nextAppointment.specialty}
-                      </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={appointmentForm.control}
+                        name="date"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Data</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={`w-full pl-3 text-left font-normal ${
+                                      !field.value ? "text-muted-foreground" : ""
+                                    }`}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PP")
+                                    ) : (
+                                      <span>Selecione uma data</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  disabled={(date) => date < new Date()}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          </FormItem>
+                        )}
+                      />
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mt-2">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-blue-700 dark:text-blue-400" />
-                          <span className="text-blue-800 dark:text-blue-300">
-                            {nextAppointment.date} ({daysUntil === 0 ? 'Hoje' : daysUntil === 1 ? 'Amanhã' : `Em ${daysUntil} dias`})
-                          </span>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-blue-700 dark:text-blue-400" />
-                          <span className="text-blue-800 dark:text-blue-300">{nextAppointment.time}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-blue-700 dark:text-blue-400" />
-                          <span className="text-blue-800 dark:text-blue-300">{nextAppointment.location}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 text-blue-700 dark:text-blue-400" />
-                          <span className="text-blue-800 dark:text-blue-300">(11) 3456-7890</span>
-                        </div>
-                      </div>
-                      
-                      {nextAppointment.notes && (
-                        <div className="mt-3 p-2 bg-blue-100/60 dark:bg-blue-900/30 rounded border border-blue-200 dark:border-blue-800">
-                          <p className="text-sm text-blue-800 dark:text-blue-300">
-                            <AlertCircle className="h-4 w-4 inline-block mr-1" />
-                            {nextAppointment.notes}
-                          </p>
-                        </div>
+                      <FormField
+                        control={appointmentForm.control}
+                        name="time"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Horário</FormLabel>
+                            <FormControl>
+                              <Input type="time" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <FormField
+                      control={appointmentForm.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Local</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Nome e endereço da clínica/hospital" />
+                          </FormControl>
+                        </FormItem>
                       )}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex flex-col justify-center gap-2">
-                  {nextAppointment.type === "Telemedicina" && (
-                    <Button className="w-full gap-2">
-                      <Video size={16} />
-                      Acessar Consulta Online
-                    </Button>
-                  )}
-                  {nextAppointment.type === "Presencial" && (
-                    <Button className="w-full gap-2">
-                      <MapPin size={16} />
-                      Ver Rota no Mapa
-                    </Button>
-                  )}
-                  <Button variant="outline" className="w-full gap-2">
-                    <Clock4 size={16} />
-                    Reagendar
-                  </Button>
-                  <Button variant="outline" className="w-full gap-2 bg-red-50 border-red-200 text-red-700 hover:bg-red-100 dark:bg-red-950/30 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/50">
-                    <Trash2 size={16} />
-                    Cancelar
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="md:col-span-2">
-            <CardHeader className="pb-3">
-              <CardTitle>Resumo</CardTitle>
-              <CardDescription>Visão geral das suas consultas</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-card rounded-lg p-3 border border-border">
-                  <div className="text-sm font-medium text-muted-foreground">Total de Consultas</div>
-                  <div className="text-2xl font-semibold mt-1">{appointments.length}</div>
-                </div>
-                <div className="bg-card rounded-lg p-3 border border-border">
-                  <div className="text-sm font-medium text-muted-foreground">Agendadas</div>
-                  <div className="text-2xl font-semibold mt-1 text-blue-600 dark:text-blue-400">
-                    {appointments.filter(a => a.status === "Agendada").length}
-                  </div>
-                </div>
-                <div className="bg-card rounded-lg p-3 border border-border">
-                  <div className="text-sm font-medium text-muted-foreground">Realizadas</div>
-                  <div className="text-2xl font-semibold mt-1 text-green-600 dark:text-green-400">
-                    {appointments.filter(a => a.status === "Realizada").length}
-                  </div>
-                </div>
-                <div className="bg-card rounded-lg p-3 border border-border">
-                  <div className="text-sm font-medium text-muted-foreground">Canceladas</div>
-                  <div className="text-2xl font-semibold mt-1 text-red-600 dark:text-red-400">
-                    {appointments.filter(a => a.status === "Cancelada").length}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle>Lembretes</CardTitle>
-              <CardDescription>Preparação para próximas consultas</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {nextAppointment ? (
-                <>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Resultados dos Exames</p>
-                      <p className="text-sm text-muted-foreground">
-                        Leve os resultados dos exames de sangue e eletrocardiograma
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Jejum Necessário</p>
-                      <p className="text-sm text-muted-foreground">
-                        É necessário jejum de 8 horas para esta consulta
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Lista de Medicamentos</p>
-                      <p className="text-sm text-muted-foreground">
-                        Prepare uma lista de todos os medicamentos em uso
-                      </p>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-6">
-                  <p className="text-muted-foreground">
-                    Nenhuma consulta agendada
-                  </p>
-                  <Button className="mt-2 gap-2">
-                    <PlusCircle size={16} />
-                    Agendar Consulta
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle>Histórico de Consultas</CardTitle>
-              <div className="relative w-64">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Buscar consulta..."
-                  className="pl-8 w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+                    />
+                    
+                    <FormField
+                      control={appointmentForm.control}
+                      name="notes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Observações</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Instruções ou notas importantes" />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancelar</Button>
+                      </DialogClose>
+                      <Button type="submit">Agendar</Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+            
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Buscar consultas..."
+                className="w-[200px] pl-8"
+              />
             </div>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="futuras" className="w-full">
-              <TabsList className="mb-4">
-                <TabsTrigger value="futuras">Consultas Futuras</TabsTrigger>
-                <TabsTrigger value="passadas">Consultas Passadas</TabsTrigger>
-                <TabsTrigger value="todas">Todas as Consultas</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="futuras">
-                <div className="rounded-md border">
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+          <Tabs defaultValue="upcoming" className="w-full">
+            <TabsList className="w-full md:w-auto mb-2">
+              <TabsTrigger value="upcoming">Próximas</TabsTrigger>
+              <TabsTrigger value="past">Anteriores</TabsTrigger>
+              <TabsTrigger value="all">Todas</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="upcoming" className="space-y-4">
+              <Card>
+                <CardHeader className="py-4">
+                  <CardTitle>Consultas Agendadas</CardTitle>
+                  <CardDescription>
+                    Suas próximas consultas e procedimentos médicos
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-0">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Data</TableHead>
-                        <TableHead>Horário</TableHead>
+                        <TableHead>Data/Hora</TableHead>
+                        <TableHead>Especialidade</TableHead>
                         <TableHead>Médico</TableHead>
-                        <TableHead className="hidden md:table-cell">Tipo</TableHead>
-                        <TableHead className="hidden lg:table-cell">Local</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {futureAppointments.map((appt) => (
-                        <TableRow key={appt.id}>
-                          <TableCell>{appt.date}</TableCell>
-                          <TableCell>{appt.time}</TableCell>
-                          <TableCell>
-                            <div className="font-medium">{appt.doctor}</div>
-                            <div className="text-xs text-muted-foreground">{appt.specialty}</div>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell">
-                            <Badge variant={appt.type === "Presencial" ? "default" : "outline"}>
-                              {appt.type}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden lg:table-cell max-w-[200px] truncate">
-                            {appt.location}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end space-x-2">
-                              {appt.type === "Telemedicina" && (
-                                <Button variant="outline" size="sm" className="gap-1">
-                                  <Video size={14} />
-                                  Acessar
-                                </Button>
-                              )}
-                              <Button variant="ghost" size="sm">Reagendar</Button>
-                              <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">Cancelar</Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      {futureAppointments.length === 0 && (
-                        <TableRow>
-                          <TableCell colSpan={6} className="text-center py-8">
-                            <div className="flex flex-col items-center">
-                              <Calendar className="h-8 w-8 text-muted-foreground mb-2" />
-                              <p className="text-muted-foreground mb-2">Nenhuma consulta futura encontrada</p>
-                              <Button className="gap-2">
-                                <PlusCircle size={16} />
-                                Agendar Consulta
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="passadas">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Data</TableHead>
-                        <TableHead>Horário</TableHead>
-                        <TableHead>Médico</TableHead>
-                        <TableHead className="hidden md:table-cell">Tipo</TableHead>
+                        <TableHead>Local</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {pastAppointments.map((appt) => (
+                      {upcomingAppointments.map((appt) => (
                         <TableRow key={appt.id}>
-                          <TableCell>{appt.date}</TableCell>
-                          <TableCell>{appt.time}</TableCell>
-                          <TableCell>
-                            <div className="font-medium">{appt.doctor}</div>
-                            <div className="text-xs text-muted-foreground">{appt.specialty}</div>
+                          <TableCell className="font-medium">
+                            <div className="flex flex-col">
+                              <span>{appt.date}</span>
+                              <span className="text-sm text-muted-foreground">{appt.time}</span>
+                            </div>
                           </TableCell>
-                          <TableCell className="hidden md:table-cell">
-                            <Badge variant={appt.type === "Presencial" ? "default" : "outline"}>
-                              {appt.type}
-                            </Badge>
+                          <TableCell>{appt.specialty}</TableCell>
+                          <TableCell>{appt.doctor}</TableCell>
+                          <TableCell>
+                            <div className="flex items-start">
+                              <MapPin className="mr-1 h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                              <span className="text-sm">{appt.location}</span>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <Badge variant={
@@ -420,39 +346,162 @@ const AppointmentsPage = () => {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex justify-end space-x-2">
-                              <Button variant="outline" size="sm" className="gap-1">
-                                <FileText size={14} />
-                                Prontuário
+                            <div className="flex justify-end gap-2">
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                                <FileText className="h-4 w-4" />
+                                <span className="sr-only">Detalhes</span>
                               </Button>
-                              {appt.status === "Cancelada" && (
-                                <Button variant="ghost" size="sm">Reagendar</Button>
-                              )}
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0 text-destructive">
+                                <X className="h-4 w-4" />
+                                <span className="sr-only">Cancelar</span>
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
                       ))}
-                      {pastAppointments.length === 0 && (
-                        <TableRow>
-                          <TableCell colSpan={6} className="text-center py-8">
-                            <p className="text-muted-foreground">Nenhuma consulta passada encontrada</p>
-                          </TableCell>
-                        </TableRow>
-                      )}
                     </TableBody>
                   </Table>
-                </div>
-              </TabsContent>
+                </CardContent>
+              </Card>
               
-              <TabsContent value="todas">
-                {/* Combina as consultas futuras e passadas */}
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-medium">Preparação para Consulta</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start">
+                        <Clock className="mr-2 h-4 w-4 text-primary mt-0.5" />
+                        <span>Chegue 15 minutos antes da consulta</span>
+                      </li>
+                      <li className="flex items-start">
+                        <FileText className="mr-2 h-4 w-4 text-primary mt-0.5" />
+                        <span>Leve seus exames anteriores e lista de medicamentos</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-medium">Lembretes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Você receberá lembretes por email 24h antes da consulta 
+                      e por SMS 1h antes.
+                    </p>
+                    <Button variant="link" className="h-auto p-0 text-primary">
+                      Ajustar preferências
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="past" className="space-y-4">
+              <Card>
+                <CardHeader className="py-4">
+                  <CardTitle>Consultas Anteriores</CardTitle>
+                  <CardDescription>
+                    Histórico de consultas e procedimentos realizados
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Data/Hora</TableHead>
+                        <TableHead>Especialidade</TableHead>
+                        <TableHead>Médico</TableHead>
+                        <TableHead>Local</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Ações</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pastAppointments.map((appt) => (
+                        <TableRow key={appt.id}>
+                          <TableCell className="font-medium">
+                            <div className="flex flex-col">
+                              <span>{appt.date}</span>
+                              <span className="text-sm text-muted-foreground">{appt.time}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>{appt.specialty}</TableCell>
+                          <TableCell>{appt.doctor}</TableCell>
+                          <TableCell>
+                            <div className="flex items-start">
+                              <MapPin className="mr-1 h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                              <span className="text-sm">{appt.location}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={
+                              appt.status === "Realizada" ? "default" : 
+                              appt.status === "Cancelada" ? "destructive" : 
+                              "outline"
+                            }>
+                              {appt.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end">
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                                <FileText className="h-4 w-4" />
+                                <span className="sr-only">Prontuário</span>
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="all">
+              {/* Combina as consultas futuras e passadas */}
+            </TabsContent>
+          </Tabs>
+          
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Calendário</CardTitle>
+                <CardDescription>
+                  Visualize suas consultas no calendário
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Calendar
+                  mode="single"
+                  selected={new Date()}
+                  className="rounded-md border"
+                />
+                
+                <div className="mt-4 space-y-2">
+                  <h3 className="text-sm font-medium">Próximas Consultas</h3>
+                  
+                  {upcomingAppointments.slice(0, 3).map((appt) => (
+                    <div key={appt.id} className="flex items-start space-x-2 text-sm p-2 rounded-md hover:bg-accent">
+                      <div className="w-2 h-2 rounded-full bg-primary mt-1.5" />
+                      <div>
+                        <p className="font-medium">{appt.specialty}</p>
+                        <p className="text-muted-foreground">{appt.date} • {appt.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
 };
 
-export default AppointmentsPage;
+export default Appointments;
