@@ -1,5 +1,5 @@
 
-import { FileText, Calendar, Pill, ShieldCheck, Clock } from 'lucide-react';
+import { FileText, Calendar, Pill, ShieldCheck, Clock, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Activity {

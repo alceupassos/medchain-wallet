@@ -10,37 +10,37 @@ const Dashboard = () => {
   const [recentActivities] = useState([
     {
       id: '1',
-      type: 'record',
+      type: 'record' as const,
       title: 'Blood Test Results',
       description: 'Complete blood count (CBC) and metabolic panel results uploaded',
       timestamp: '2 hours ago',
       provider: 'City Hospital Lab',
-      status: 'completed'
+      status: 'completed' as const
     },
     {
       id: '2',
-      type: 'appointment',
+      type: 'appointment' as const,
       title: 'Annual Checkup',
       description: 'Annual physical examination with Dr. Sarah Johnson',
       timestamp: 'Tomorrow, 10:00 AM',
       provider: 'Primary Care Center',
-      status: 'upcoming'
+      status: 'upcoming' as const
     },
     {
       id: '3',
-      type: 'medication',
+      type: 'medication' as const,
       title: 'Medication Reminder',
       description: 'Take Lisinopril 10mg once daily with food',
       timestamp: 'Today, 8:00 AM',
-      status: 'active'
+      status: 'active' as const
     },
     {
       id: '4',
-      type: 'access',
+      type: 'access' as const,
       title: 'Access Permission Granted',
       description: 'Dr. Michael Chen was granted access to your medical history',
       timestamp: 'Yesterday, 2:15 PM',
-      status: 'granted'
+      status: 'granted' as const
     }
   ]);
 
