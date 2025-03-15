@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,9 +19,21 @@ import {
   TrendingUp 
 } from 'lucide-react';
 import HealthMetric from "@/components/ui/HealthMetric";
-import { ResponsiveContainer, Area, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
+import { 
+  ResponsiveContainer, 
+  AreaChart, 
+  LineChart, 
+  BarChart,
+  Area, 
+  Line, 
+  CartesianGrid, 
+  XAxis, 
+  YAxis, 
+  Tooltip, 
+  Legend, 
+  Bar 
+} from 'recharts';
 
-// Sample data for charts
 const bloodPressureData = [
   { date: 'Jun 1', systolic: 135, diastolic: 85 },
   { date: 'Jun 8', systolic: 130, diastolic: 83 },
@@ -75,7 +86,6 @@ const Metrics = () => {
   });
 
   useEffect(() => {
-    // Update selectedMetricType when the form value changes
     const subscription = addForm.watch((value) => {
       setSelectedMetricType(value.metricType);
     });
@@ -577,3 +587,4 @@ const Metrics = () => {
 };
 
 export default Metrics;
+
