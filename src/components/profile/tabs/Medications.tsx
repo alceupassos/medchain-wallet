@@ -3,15 +3,7 @@ import { Plus } from 'lucide-react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppButton from '@/components/ui/AppButton';
-
-interface Medication {
-  id: string;
-  name: string;
-  dose: string;
-  frequency: string;
-  startDate: string;
-  endDate: string;
-}
+import { Medication } from '@/components/profile/types';
 
 interface MedicationsProps {
   medications: Medication[];
@@ -37,6 +29,7 @@ const Medications = ({ medications }: MedicationsProps) => {
               <TableHead>Frequência</TableHead>
               <TableHead>Início</TableHead>
               <TableHead>Término</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -48,6 +41,7 @@ const Medications = ({ medications }: MedicationsProps) => {
                 <TableCell>{medication.frequency}</TableCell>
                 <TableCell>{medication.startDate}</TableCell>
                 <TableCell>{medication.endDate}</TableCell>
+                <TableCell>{medication.status}</TableCell>
                 <TableCell className="text-right">
                   <AppButton
                     variant="ghost"

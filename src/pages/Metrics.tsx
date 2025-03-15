@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,14 +28,12 @@ const Metrics = () => {
     secondary: "bloodPressure"
   });
   
-  // Dados simulados para correlação
   const correlationData = Array.from({ length: 14 }, (_, i) => ({
     date: `${i+1}/06`,
     metric1Value: 75 + Math.random() * 10,
     metric2Value: 120 + Math.random() * 20
   }));
   
-  // Dados simulados para metas
   const healthGoals: HealthGoal[] = [
     {
       id: "1",
@@ -248,7 +245,7 @@ const Metrics = () => {
                       <div className="text-xs text-muted-foreground">{data.date}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-mono">{data.value} bpm</div>
+                      <div className="font-mono">{data.rest} bpm</div>
                       <div className="text-xs text-green-600 dark:text-green-400">Normal</div>
                     </div>
                   </div>

@@ -7,11 +7,17 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 import { 
   profileSections, 
   medicalRecords, 
-  medications, 
   appointments, 
   healthMetrics, 
   accessLogs 
 } from '@/data/profileData';
+
+// Adding the required 'status' property to each medication
+const medications = [
+  { id: "med1", name: "Lisinopril", dose: "10mg", frequency: "Uma vez ao dia", startDate: "15/01/2022", endDate: "Contínuo", status: "Ativo" },
+  { id: "med2", name: "Metformina", dose: "500mg", frequency: "Duas vezes ao dia", startDate: "10/03/2022", endDate: "Contínuo", status: "Ativo" },
+  { id: "med3", name: "Atorvastatina", dose: "20mg", frequency: "Uma vez ao dia antes de dormir", startDate: "05/08/2023", endDate: "Contínuo", status: "Ativo" },
+];
 
 const Profile = () => {
   return (
