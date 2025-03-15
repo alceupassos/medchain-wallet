@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import AppButton from '@/components/ui/AppButton';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const EmergencyQR = () => {
   const [qrCodeGenerated, setQrCodeGenerated] = useState(false);
@@ -26,12 +27,11 @@ const EmergencyQR = () => {
           {qrCodeGenerated ? (
             <div className="flex flex-col items-center space-y-3">
               <div className="w-48 h-48 bg-white flex items-center justify-center p-2">
-                <QRCode
+                <QRCodeSVG
                   value={`https://medchain.app/emergency-access/${accessCode}`}
                   size={180}
                   level="H"
                   includeMargin={true}
-                  renderAs="svg"
                 />
               </div>
               
