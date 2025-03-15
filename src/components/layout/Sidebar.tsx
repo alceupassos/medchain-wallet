@@ -97,39 +97,33 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                {isOpen && (
-                  <>
-                    {item.name}
-                    
-                    {/* Active indicator */}
-                    {location.pathname === item.path && (
-                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"></span>
-                    )}
-                  </>
+                <span className="truncate">{item.name}</span>
+                
+                {/* Active indicator */}
+                {location.pathname === item.path && (
+                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"></span>
                 )}
               </Link>
             ))}
           </div>
           
-          {isOpen && (
-            <div className="mt-4 px-3">
-              <div className="glass-card rounded-lg p-4">
-                <div className="flex items-center text-primary">
-                  <Heart size={18} className="mr-2" />
-                  <h3 className="text-sm font-medium">Status de Saúde</h3>
+          <div className="mt-4 px-3">
+            <div className="glass-card rounded-lg p-4">
+              <div className="flex items-center text-primary">
+                <Heart size={18} className="mr-2" />
+                <h3 className="text-sm font-medium">Status de Saúde</h3>
+              </div>
+              <div className="mt-2 flex items-center">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="bg-medical h-2 rounded-full" style={{ width: '87%' }}></div>
                 </div>
-                <div className="mt-2 flex items-center">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div className="bg-medical h-2 rounded-full" style={{ width: '87%' }}></div>
-                  </div>
-                  <span className="ml-2 text-xs font-medium">87%</span>
-                </div>
-                <div className="mt-2 text-xs text-gray-500">
-                  Atualizado: Hoje, 9:45
-                </div>
+                <span className="ml-2 text-xs font-medium">87%</span>
+              </div>
+              <div className="mt-2 text-xs text-gray-500">
+                Atualizado: Hoje, 9:45
               </div>
             </div>
-          )}
+          </div>
           
           <div className="mt-auto pb-6 pt-4 space-y-1">
             {supportItems.map((item) => (
@@ -151,7 +145,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                {isOpen && item.name}
+                <span className="truncate">{item.name}</span>
               </Link>
             ))}
             
@@ -159,7 +153,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               <span className="inline-flex items-center justify-center mr-3 text-gray-500 dark:text-gray-400">
                 <LogOut size={20} />
               </span>
-              {isOpen && "Sair"}
+              <span className="truncate">Sair</span>
             </button>
           </div>
         </div>
