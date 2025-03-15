@@ -110,10 +110,10 @@ export const appointments = [
 
 // Dados para métricas de saúde
 export const healthMetrics = [
-  { name: "Pressão Arterial", value: "130/85", date: "10/11/2023", status: "Alerta" },
-  { name: "Glicose", value: "110 mg/dL", date: "10/11/2023", status: "Normal" },
-  { name: "IMC", value: "24.7", date: "10/11/2023", status: "Normal" },
-  { name: "Colesterol Total", value: "195 mg/dL", date: "22/09/2023", status: "Normal" },
+  { name: "Pressão Arterial", value: "130/85", date: "10/11/2023", status: "Alerta" as "Normal" | "Alerta" | "Crítico" },
+  { name: "Glicose", value: "110 mg/dL", date: "10/11/2023", status: "Normal" as "Normal" | "Alerta" | "Crítico" },
+  { name: "IMC", value: "24.7", date: "10/11/2023", status: "Normal" as "Normal" | "Alerta" | "Crítico" },
+  { name: "Colesterol Total", value: "195 mg/dL", date: "22/09/2023", status: "Normal" as "Normal" | "Alerta" | "Crítico" },
 ];
 
 // Dados para registros de acesso
