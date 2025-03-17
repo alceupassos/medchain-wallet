@@ -8,33 +8,39 @@ interface MetricsSummaryProps {
 
 const MetricsSummary = ({}: MetricsSummaryProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <HealthMetric 
-        title="Pressão Arterial"
-        value="120/80" 
-        unit="mmHg"
-        status="normal"
-        change={{ value: "-5", direction: "down" }}
-        icon={<Heart className="h-4 w-4" />}
-      />
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <HealthMetric 
+          title="Pressão Arterial"
+          value="120/80" 
+          unit="mmHg"
+          status="normal"
+          change={{ value: "-5", direction: "down" }}
+          icon={<Heart className="h-4 w-4" />}
+        />
+        
+        <HealthMetric 
+          title="Glicemia"
+          value="105" 
+          unit="mg/dL"
+          status="warning"
+          change={{ value: "+8", direction: "up" }}
+          icon={<Activity className="h-4 w-4" />}
+        />
+        
+        <HealthMetric 
+          title="Frequência Cardíaca"
+          value="72" 
+          unit="bpm"
+          status="normal"
+          change={{ value: "-3", direction: "down" }}
+          icon={<TrendingDown className="h-4 w-4" />}
+        />
+      </div>
       
-      <HealthMetric 
-        title="Glicemia"
-        value="105" 
-        unit="mg/dL"
-        status="warning"
-        change={{ value: "+8", direction: "up" }}
-        icon={<Activity className="h-4 w-4" />}
-      />
-      
-      <HealthMetric 
-        title="Frequência Cardíaca"
-        value="72" 
-        unit="bpm"
-        status="normal"
-        change={{ value: "-3", direction: "down" }}
-        icon={<TrendingDown className="h-4 w-4" />}
-      />
+      <div className="text-xs text-muted-foreground text-center italic mt-2">
+        * Dados fictícios não reais usado para exemplo de software
+      </div>
     </div>
   );
 };

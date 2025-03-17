@@ -1,6 +1,7 @@
 
-/// <reference types="@testing-library/jest-dom" />
+/// <reference types="jest" />
 
+// Import the matchers to make sure they're included
 import '@testing-library/jest-dom';
 
 declare global {

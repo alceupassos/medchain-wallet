@@ -52,6 +52,9 @@ const WeightChart = ({ data }: WeightChartProps) => {
               />
             </LineChart>
           </ResponsiveContainer>
+          <div className="text-xs text-muted-foreground text-center italic mt-3">
+            * Dados fictícios não reais usado para exemplo de software
+          </div>
         </CardContent>
       </Card>
       
