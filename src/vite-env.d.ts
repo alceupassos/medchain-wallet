@@ -9,3 +9,20 @@ import '@testing-library/jest-dom';
 
 // This file extends the TypeScript definitions for Vite and Jest
 // It ensures that the TypeScript compiler recognizes the extended Jest matchers
+
+// Add explicit type definitions for jest-dom matchers
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveTextContent(text: string | RegExp): R;
+      toHaveClass(className: string): R;
+      toBeVisible(): R;
+      toBeDisabled(): R;
+      toBeEnabled(): R;
+      toHaveAttribute(attr: string, value?: string | RegExp): R;
+      toHaveStyle(css: Record<string, any>): R;
+      toHaveValue(value: string | string[] | number | null): R;
+    }
+  }
+}

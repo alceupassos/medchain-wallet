@@ -8,7 +8,7 @@ import '@testing-library/jest-dom';
 // Augment Jest's expect
 declare global {
   namespace jest {
-    interface Matchers<R, T> {
+    interface Matchers<R> {
       // DOM Testing Library matchers
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
@@ -31,21 +31,28 @@ declare global {
   }
 }
 
-// Add explicit declarations for Jest matchers to ensure compatibility
+// This is crucial - we need to explicitly define matchers for different element types
 declare global {
   namespace jest {
-    // Add specific matcher types for Node and HTMLElement
-    interface Matchers<R, T extends HTMLElement | ChildNode> {
-      toHaveClass(className: string): R;
+    // Generic DOM Node type
+    interface Matchers<R, T> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
+      toHaveClass(className: string): R;
     }
     
-    // Add additional matcher for JestMatchers interface
+    // Specific Node and HTMLElement
+    interface Matchers<R, T extends HTMLElement | Node | ChildNode> {
+      toBeInTheDocument(): R;
+      toHaveTextContent(text: string | RegExp): R;
+      toHaveClass(className: string): R;
+    }
+    
+    // For JestMatchers
     interface JestMatchers<T> {
       toBeInTheDocument(): T;
-      toHaveClass(className: string): T;
       toHaveTextContent(text: string | RegExp): T;
+      toHaveClass(className: string): T;
     }
   }
 }
