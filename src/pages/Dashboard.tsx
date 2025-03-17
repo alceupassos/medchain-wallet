@@ -55,7 +55,12 @@ const Dashboard = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl md:text-3xl font-display font-semibold">Olá, João</h1>
-                <p className="text-gray-400 mt-1">Aqui está um resumo dos seus dados de saúde</p>
+                <p className="text-gray-400 mt-1">
+                  Aqui está um resumo dos seus dados de saúde
+                  <span className="text-xs text-muted-foreground italic ml-1">
+                    * Dados fictícios não reais usado para exemplo de sistema
+                  </span>
+                </p>
               </div>
               <div className="flex space-x-3">
                 <AppButton
