@@ -5,9 +5,9 @@
 // Import @testing-library/jest-dom types
 import '@testing-library/jest-dom';
 
-// Augment Jest's expect
 declare global {
   namespace jest {
+    // Base interface with common matchers
     interface Matchers<R> {
       // DOM Testing Library matchers
       toBeInTheDocument(): R;
@@ -20,8 +20,6 @@ declare global {
       toHaveAttribute(attr: string, value?: string | RegExp): R;
       toHaveValue(value: string | string[] | number | null): R;
       toBeEmpty(): R;
-      
-      // Make sure we have all the matchers used in tests
       toHaveStyle(css: Record<string, any>): R;
       toContainElement(element: HTMLElement | null): R;
       toContainHTML(html: string): R;
@@ -31,28 +29,45 @@ declare global {
   }
 }
 
-// This is crucial - we need to explicitly define matchers for different element types
+// Extended matcher interfaces for specific element types
 declare global {
   namespace jest {
-    // Generic DOM Node type
-    interface Matchers<R, T> {
+    // Base generics matcher
+    interface Matchers<R, T = any> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
+      toHaveStyle(css: Record<string, any>): R;
     }
     
-    // Specific Node and HTMLElement
+    // HTMLElement specific matchers
     interface Matchers<R, T extends HTMLElement | Node | ChildNode> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
+      toHaveStyle(css: Record<string, any>): R;
+      toBeVisible(): R;
+      toBeDisabled(): R;
+      toBeEnabled(): R;
     }
     
-    // For JestMatchers
+    // JestMatchers interface
     interface JestMatchers<T> {
       toBeInTheDocument(): T;
       toHaveTextContent(text: string | RegExp): T;
       toHaveClass(className: string): T;
+      toHaveStyle(css: Record<string, any>): T;
+    }
+  }
+}
+
+// Additional specific matcher interfaces
+declare global {
+  namespace jest {
+    interface AsymmetricMatchers {
+      toBeInTheDocument(): void;
+      toHaveTextContent(text: string | RegExp): void;
+      toHaveClass(className: string): void;
     }
   }
 }

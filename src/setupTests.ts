@@ -5,17 +5,18 @@
 // Import @testing-library/jest-dom to add custom matchers
 import '@testing-library/jest-dom';
 
-// Explicitly extend expect with jest-dom matchers
+// Import needed testing libraries
 import { expect } from '@jest/globals';
 import * as matchers from '@testing-library/jest-dom/matchers';
-
-// Extend Jest's expect
-expect.extend(matchers);
-
-// We need to make this more explicit for TypeScript
 import { configure } from '@testing-library/react';
+
+// Explicitly extend Jest's expect with all the matchers
+expect.extend(matchers);
 
 // Configure testing library
 configure({
   testIdAttribute: 'data-testid',
 });
+
+// Make sure the global expect includes jest-dom matchers
+global.expect = expect;
