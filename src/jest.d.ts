@@ -8,8 +8,7 @@ import '@testing-library/jest-dom';
 // Extend Jest's expect to include DOM testing matchers
 declare global {
   namespace jest {
-    // Base interface with common matchers for any type
-    interface Matchers<R> {
+    interface Matchers<R, T> {
       // DOM Testing Library matchers
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
