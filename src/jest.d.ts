@@ -10,8 +10,16 @@ declare global {
   namespace jest {
     interface Matchers<R> {
       toBeInTheDocument(): R;
-      toHaveTextContent(text: string): R;
+      toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
+      // Add other custom matchers that might be used
+      toBeVisible(): R;
+      toBeDisabled(): R;
+      toBeEnabled(): R;
+      toBeChecked(): R;
+      toHaveAttribute(attr: string, value?: string | RegExp): R;
+      toHaveValue(value: string | string[] | number | null): R;
+      toBeEmpty(): R;
     }
   }
 }
