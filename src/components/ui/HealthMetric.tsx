@@ -1,5 +1,5 @@
 
-import { Activity, TrendingDown, TrendingUp } from 'lucide-react';
+import { Activity, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface HealthMetricProps {
@@ -69,7 +69,10 @@ const HealthMetric = ({
               <span className="text-red-400 mr-1">{change.value}</span>
             </>
           ) : (
-            <span className="text-gray-500 mr-1">{change.value}</span>
+            <>
+              <Minus size={14} className="text-gray-500 mr-1" />
+              <span className="text-gray-500 mr-1">{change.value}</span>
+            </>
           )}
           <span className="text-gray-400">
             vs. último período
