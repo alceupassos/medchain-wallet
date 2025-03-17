@@ -11,7 +11,7 @@ configure({
   testIdAttribute: 'data-testid',
 });
 
-// Use the modern way to extend Jest's expect
+// Make sure Jest knows about the custom matchers
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { expect } from '@jest/globals';
 
