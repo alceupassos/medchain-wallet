@@ -1,14 +1,14 @@
 
 // Type definitions for Jest
 /// <reference types="jest" />
-/// <reference types="@jest/globals" />
 
-// Add Testing Library custom matchers
+// Import @testing-library/jest-dom types
 import '@testing-library/jest-dom';
 
+// Augment Jest's expect
 declare global {
   namespace jest {
-    interface Matchers<R> {
+    interface Matchers<R, T = any> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
