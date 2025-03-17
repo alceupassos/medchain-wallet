@@ -74,6 +74,8 @@ describe("HealthMetric", () => {
     render(<HealthMetric 
       title="Simple Metric"
       value="75"
+      unit=""
+      status="normal"
     />);
     
     expect(screen.getByText("Simple Metric")).toBeInTheDocument();
