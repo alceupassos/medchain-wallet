@@ -1,6 +1,8 @@
 
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect, jest, beforeEach } from "@jest/globals";
 import Metrics from "../../pages/Metrics";
 
 // Mock the MainLayout component since we're testing Metrics component in isolation

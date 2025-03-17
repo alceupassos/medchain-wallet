@@ -1,5 +1,7 @@
 
+import React from "react";
 import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "@jest/globals";
 import MetricsSummary from "../MetricsSummary";
 
 describe("MetricsSummary", () => {
