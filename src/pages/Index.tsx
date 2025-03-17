@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OnboardingSlides from '@/components/onboarding/OnboardingSlides';
 import AuthForm from '@/components/onboarding/AuthForm';
+import LanguageSwitcher from '@/components/language/LanguageSwitcher';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState<'onboarding' | 'auth'>('onboarding');
+  const { t } = useLanguage();
   
   const handleOnboardingComplete = () => {
     setStep('auth');
@@ -30,6 +33,10 @@ const Index = () => {
           className="h-12 w-auto"
         />
         <span className="ml-2 text-xl font-bold text-white">MedChain</span>
+      </div>
+      
+      <div className="absolute top-6 right-6 z-10">
+        <LanguageSwitcher />
       </div>
       
       {step === 'onboarding' ? (

@@ -19,6 +19,7 @@ import {
   Key
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -26,28 +27,30 @@ interface SidebarProps {
 }
 
 interface NavItem {
-  name: string;
+  nameKey: string;
   path: string;
   icon: JSX.Element;
 }
 
 const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const location = useLocation();
+  const { t } = useLanguage();
+  
   const [navItems] = useState<NavItem[]>([
-    { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Perfil Médico', path: '/profile', icon: <UserRound size={20} /> },
-    { name: 'Prontuários', path: '/records', icon: <FileText size={20} /> },
-    { name: 'Medicamentos', path: '/medications', icon: <Pill size={20} /> },
-    { name: 'Consultas', path: '/appointments', icon: <Calendar size={20} /> },
-    { name: 'Métricas de Saúde', path: '/metrics', icon: <BarChart3 size={20} /> },
-    { name: 'Controle de Acesso', path: '/access', icon: <ShieldCheck size={20} /> },
-    { name: 'QR de Emergência', path: '/emergency', icon: <QrCode size={20} /> },
+    { nameKey: 'nav.dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
+    { nameKey: 'nav.profile', path: '/profile', icon: <UserRound size={20} /> },
+    { nameKey: 'nav.records', path: '/records', icon: <FileText size={20} /> },
+    { nameKey: 'nav.medications', path: '/medications', icon: <Pill size={20} /> },
+    { nameKey: 'nav.appointments', path: '/appointments', icon: <Calendar size={20} /> },
+    { nameKey: 'nav.metrics', path: '/metrics', icon: <BarChart3 size={20} /> },
+    { nameKey: 'nav.access', path: '/access', icon: <ShieldCheck size={20} /> },
+    { nameKey: 'nav.emergency', path: '/emergency', icon: <QrCode size={20} /> },
   ]);
   
   const supportItems: NavItem[] = [
-    { name: 'Central de Ajuda', path: '/help', icon: <HelpCircle size={20} /> },
-    { name: 'Suporte', path: '/support', icon: <MessageCircleQuestion size={20} /> },
-    { name: 'Gerenciar Acesso', path: '/manage-access', icon: <Key size={20} /> },
+    { nameKey: 'nav.help', path: '/help', icon: <HelpCircle size={20} /> },
+    { nameKey: 'nav.support', path: '/support', icon: <MessageCircleQuestion size={20} /> },
+    { nameKey: 'nav.manage', path: '/manage-access', icon: <Key size={20} /> },
   ];
 
   return (
@@ -97,7 +100,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                <span className="truncate">{item.name}</span>
+                <span className="truncate">{t(item.nameKey)}</span>
                 
                 {/* Active indicator */}
                 {location.pathname === item.path && (
@@ -145,7 +148,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 )}>
                   {item.icon}
                 </span>
-                <span className="truncate">{item.name}</span>
+                <span className="truncate">{t(item.nameKey)}</span>
               </Link>
             ))}
             
@@ -153,7 +156,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               <span className="inline-flex items-center justify-center mr-3 text-gray-500 dark:text-gray-400">
                 <LogOut size={20} />
               </span>
-              <span className="truncate">Sair</span>
+              <span className="truncate">{t('nav.logout')}</span>
             </button>
           </div>
         </div>

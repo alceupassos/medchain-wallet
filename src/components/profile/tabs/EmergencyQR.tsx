@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import AppButton from '@/components/ui/AppButton';
 import { QRCodeSVG } from 'qrcode.react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const EmergencyQR = () => {
   const [qrCodeGenerated, setQrCodeGenerated] = useState(false);
   const [accessCode, setAccessCode] = useState("");
+  const { t } = useLanguage();
   
   const handleGenerateQrCode = () => {
     setQrCodeGenerated(true);
@@ -16,11 +18,11 @@ const EmergencyQR = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">QR Code de Emergência</CardTitle>
+        <CardTitle className="text-xl">{t('emergency.title')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-muted-foreground">
-          O QR Code de emergência permite que profissionais de saúde acessem suas informações médicas essenciais em caso de emergência.
+          {t('emergency.description')}
         </p>
         
         <div className="border border-border rounded-lg p-5">
@@ -36,39 +38,39 @@ const EmergencyQR = () => {
               </div>
               
               <div className="text-center">
-                <div className="text-sm font-medium mb-1">Código de Acesso Emergencial</div>
+                <div className="text-sm font-medium mb-1">{t('emergency.access_code')}</div>
                 <div className="font-mono text-lg font-semibold">{accessCode}</div>
               </div>
               
               <div className="flex space-x-2">
                 <AppButton size="sm" variant="outline">
-                  Baixar
+                  {t('emergency.download')}
                 </AppButton>
                 <AppButton size="sm" variant="outline">
-                  Compartilhar
+                  {t('emergency.share')}
                 </AppButton>
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center py-10">
               <p className="text-center mb-4">
-                Gere um QR code único que contém acesso às suas informações médicas essenciais para situações de emergência.
+                {t('emergency.description')}
               </p>
               <AppButton onClick={handleGenerateQrCode}>
-                Gerar QR Code de Emergência
+                {t('emergency.generate')}
               </AppButton>
             </div>
           )}
         </div>
         
         <div className="bg-muted/50 p-4 rounded-lg">
-          <h4 className="font-medium mb-2">Informações incluídas no QR Code:</h4>
+          <h4 className="font-medium mb-2">{t('emergency.info_title')}</h4>
           <ul className="list-disc pl-5 space-y-1 text-sm">
-            <li>Nome completo e data de nascimento</li>
-            <li>Contato de emergência</li>
-            <li>Tipo sanguíneo</li>
-            <li>Alergias e condições críticas</li>
-            <li>Medicamentos atuais</li>
+            <li>{t('emergency.info.name')}</li>
+            <li>{t('emergency.info.contact')}</li>
+            <li>{t('emergency.info.blood')}</li>
+            <li>{t('emergency.info.allergies')}</li>
+            <li>{t('emergency.info.medications')}</li>
           </ul>
         </div>
       </CardContent>

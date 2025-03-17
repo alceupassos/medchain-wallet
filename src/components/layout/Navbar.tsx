@@ -10,6 +10,7 @@ import {
   Sun,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LanguageSwitcher from '@/components/language/LanguageSwitcher';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -60,6 +61,8 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
         </div>
 
         <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
+          
           <button
             type="button"
             className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 relative"
