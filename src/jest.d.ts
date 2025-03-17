@@ -31,4 +31,23 @@ declare global {
   }
 }
 
+// Add explicit declarations for Jest matchers to ensure compatibility
+declare global {
+  namespace jest {
+    // Add specific matcher types for Node and HTMLElement
+    interface Matchers<R, T extends HTMLElement | ChildNode> {
+      toHaveClass(className: string): R;
+      toBeInTheDocument(): R;
+      toHaveTextContent(text: string | RegExp): R;
+    }
+    
+    // Add additional matcher for JestMatchers interface
+    interface JestMatchers<T> {
+      toBeInTheDocument(): T;
+      toHaveClass(className: string): T;
+      toHaveTextContent(text: string | RegExp): T;
+    }
+  }
+}
+
 export {};
