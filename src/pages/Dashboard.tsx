@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Stethoscope, Calendar, FileText, Clock, Zap, Heart, Activity, Pill } from 'lucide-react';
 import AppButton from '@/components/ui/AppButton';
 import SummaryCard from '@/components/dashboard/SummaryCard';
@@ -159,9 +160,9 @@ const Dashboard = () => {
                   />
                 </div>
                 
-                <button className="w-full mt-4 text-sm text-primary font-medium hover:underline flex items-center justify-center">
+                <Link to="/metrics" className="w-full mt-4 text-sm text-primary font-medium hover:underline flex items-center justify-center">
                   Ver Todas as Métricas de Saúde
-                </button>
+                </Link>
               </div>
               
               <div className="glass-card rounded-xl overflow-hidden mt-6 animate-scale-in [animation-delay:100ms]">
@@ -192,9 +193,9 @@ const Dashboard = () => {
                     </div>
                   </div>
                   
-                  <button className="w-full mt-4 text-sm text-primary font-medium hover:underline flex items-center justify-center">
+                  <Link to="/access" className="w-full mt-4 text-sm text-primary font-medium hover:underline flex items-center justify-center">
                     Ver Detalhes de Verificação
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
