@@ -35,6 +35,9 @@ declare global {
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
       toHaveStyle(css: Record<string, any>): R;
+      toBeVisible(): R;
+      toBeDisabled(): R;
+      toBeEnabled(): R;
     }
 
     // Add JestMatchers interface for completeness
@@ -43,6 +46,9 @@ declare global {
       toHaveTextContent(text: string | RegExp): T;
       toHaveClass(className: string): T;
       toHaveStyle(css: Record<string, any>): T;
+      toBeVisible(): T;
+      toBeDisabled(): T;
+      toBeEnabled(): T;
     }
   }
 }
