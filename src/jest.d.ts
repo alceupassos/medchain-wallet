@@ -26,7 +26,7 @@ declare global {
       toHaveFormValues(values: Record<string, any>): void;
     }
 
-    interface Matchers<R> {
+    interface Matchers<R, T = any> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
