@@ -19,4 +19,7 @@ configure({
 });
 
 // Make sure the global expect includes jest-dom matchers
-global.expect = expect;
+// Fix the TypeScript error by using the declare syntax for extending global
+declare global {
+  const expect: typeof import('@jest/globals').expect;
+}

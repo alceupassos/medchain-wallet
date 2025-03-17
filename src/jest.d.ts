@@ -8,7 +8,7 @@ import '@testing-library/jest-dom';
 declare global {
   namespace jest {
     // Base interface with common matchers
-    interface Matchers<R> {
+    interface Matchers<R, T> {
       // DOM Testing Library matchers
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
@@ -32,15 +32,7 @@ declare global {
 // Extended matcher interfaces for specific element types
 declare global {
   namespace jest {
-    // Base generics matcher
-    interface Matchers<R, T = any> {
-      toBeInTheDocument(): R;
-      toHaveTextContent(text: string | RegExp): R;
-      toHaveClass(className: string): R;
-      toHaveStyle(css: Record<string, any>): R;
-    }
-    
-    // HTMLElement specific matchers
+    // Specific Node and HTMLElement - These are crucial for element-specific testing
     interface Matchers<R, T extends HTMLElement | Node | ChildNode> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
@@ -51,23 +43,20 @@ declare global {
       toBeEnabled(): R;
     }
     
-    // JestMatchers interface
+    // For JestMatchers (used in some test functions)
     interface JestMatchers<T> {
       toBeInTheDocument(): T;
       toHaveTextContent(text: string | RegExp): T;
       toHaveClass(className: string): T;
       toHaveStyle(css: Record<string, any>): T;
     }
-  }
-}
 
-// Additional specific matcher interfaces
-declare global {
-  namespace jest {
+    // For asymmetric matchers
     interface AsymmetricMatchers {
       toBeInTheDocument(): void;
       toHaveTextContent(text: string | RegExp): void;
       toHaveClass(className: string): void;
+      toHaveStyle(css: Record<string, any>): void;
     }
   }
 }

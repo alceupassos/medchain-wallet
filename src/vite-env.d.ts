@@ -13,7 +13,7 @@ import '@testing-library/jest-dom';
 // Add explicit type definitions for jest-dom matchers to global namespace
 declare global {
   namespace jest {
-    interface Matchers<R> {
+    interface Matchers<R, T = any> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
@@ -29,11 +29,20 @@ declare global {
       toHaveFocus(): R;
     }
 
-    // Also add to any specific element types
-    interface Matchers<R, T> {
+    // Also add specific types for element-specific matchers
+    interface Matchers<R, T extends HTMLElement | Node | ChildNode> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
+      toHaveStyle(css: Record<string, any>): R;
+    }
+
+    // Add JestMatchers interface for completeness
+    interface JestMatchers<T> {
+      toBeInTheDocument(): T;
+      toHaveTextContent(text: string | RegExp): T;
+      toHaveClass(className: string): T;
+      toHaveStyle(css: Record<string, any>): T;
     }
   }
 }
