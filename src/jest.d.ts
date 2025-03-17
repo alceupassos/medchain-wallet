@@ -1,15 +1,29 @@
 
-// Type definitions for Jest
 /// <reference types="jest" />
+/// <reference types="@testing-library/jest-dom" />
 
-// Import @testing-library/jest-dom types
-import '@testing-library/jest-dom';
-
-// Extend Jest's expect to include DOM testing matchers
+// Add missing type definitions for Jest DOM matchers
 declare global {
   namespace jest {
-    interface Matchers<R, T = any> {
-      // DOM Testing Library matchers
+    interface AsymmetricMatchers {
+      toBeInTheDocument(): void;
+      toHaveTextContent(text: string | RegExp): void;
+      toHaveClass(className: string): void;
+      toBeVisible(): void;
+      toBeDisabled(): void;
+      toBeEnabled(): void;
+      toBeChecked(): void;
+      toHaveAttribute(attr: string, value?: string | RegExp): void;
+      toHaveValue(value: string | string[] | number | null): void;
+      toBeEmpty(): void;
+      toHaveStyle(css: Record<string, any>): void;
+      toContainElement(element: HTMLElement | null): void;
+      toContainHTML(html: string): void;
+      toHaveFocus(): void;
+      toHaveFormValues(values: Record<string, any>): void;
+    }
+
+    interface Matchers<R, T> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;

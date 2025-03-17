@@ -2,12 +2,12 @@
 // This file is used by Jest to setup the test environment
 // It's automatically executed before running tests
 
-// Import @testing-library/jest-dom to add custom matchers
+// Import jest-dom to add custom DOM element matchers
 import '@testing-library/jest-dom';
-import { expect } from '@jest/globals';
 
-// Extend Jest's expect
+// Explicitly extend Jest's expect with all matchers from testing-library
 import * as matchers from '@testing-library/jest-dom/matchers';
+import { expect } from '@jest/globals';
 expect.extend(matchers);
 
 // Configure testing library
