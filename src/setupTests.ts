@@ -18,25 +18,5 @@ configure({
   testIdAttribute: 'data-testid',
 });
 
-// Make sure the global expect includes jest-dom matchers
-declare global {
-  // Instead of redeclaring expect, we'll augment the existing namespace
-  namespace jest {
-    interface Matchers<R> {
-      toBeInTheDocument(): R;
-      toHaveTextContent(text: string | RegExp): R;
-      toHaveClass(className: string): R;
-      toBeVisible(): R;
-      toBeDisabled(): R;
-      toBeEnabled(): R;
-      toHaveAttribute(attr: string, value?: string | RegExp): R;
-      toHaveValue(value: string | string[] | number | null): R;
-      toBeEmpty(): R;
-      toHaveStyle(css: Record<string, any>): R;
-      toContainElement(element: HTMLElement | null): R;
-      toContainHTML(html: string): R;
-      toHaveFocus(): R;
-      toHaveFormValues(values: Record<string, any>): R;
-    }
-  }
-}
+// We're not redefining expect globally as it causes type errors
+// Instead, ensure the types are properly imported in jest.d.ts and vite-env.d.ts

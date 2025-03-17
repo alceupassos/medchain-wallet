@@ -2,23 +2,23 @@
 import { Activity, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface HealthMetricProps {
+export interface HealthMetricProps {
   title: string;
   value: string | number;
-  unit: string;
-  status: 'normal' | 'warning' | 'alert';
+  unit?: string;
+  status?: 'normal' | 'warning' | 'alert'; 
   icon?: React.ReactNode;
   change?: {
     value: string;
-    direction: 'up' | 'down';
+    direction: 'up' | 'down' | 'neutral';
   };
 }
 
 const HealthMetric = ({ 
   title, 
   value, 
-  unit, 
-  status, 
+  unit = '', 
+  status = 'normal', 
   icon,
   change 
 }: HealthMetricProps) => {
@@ -53,7 +53,7 @@ const HealthMetric = ({
       
       <div className="flex items-baseline">
         <span className="text-2xl font-semibold">{value}</span>
-        <span className="ml-1 text-xs text-gray-400">{unit}</span>
+        {unit && <span className="ml-1 text-xs text-gray-400">{unit}</span>}
       </div>
       
       {change && (
@@ -63,11 +63,13 @@ const HealthMetric = ({
               <TrendingDown size={14} className="text-green-400 mr-1" />
               <span className="text-green-400 mr-1">{change.value}</span>
             </>
-          ) : (
+          ) : change.direction === 'up' ? (
             <>
               <TrendingUp size={14} className="text-red-400 mr-1" />
               <span className="text-red-400 mr-1">{change.value}</span>
             </>
+          ) : (
+            <span className="text-gray-500 mr-1">{change.value}</span>
           )}
           <span className="text-gray-400">
             vs. último período

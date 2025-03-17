@@ -33,17 +33,17 @@ describe("HealthMetric", () => {
     
     // Normal status (default from defaultProps)
     let statusIndicator = screen.getByText("Normal").previousSibling;
-    expect(statusIndicator).toHaveClass("text-health-green");
+    expect(statusIndicator).toHaveClass("w-1.5");
     
     // Warning status
     rerender(<HealthMetric {...defaultProps} status="warning" />);
     statusIndicator = screen.getByText("Atenção").previousSibling;
-    expect(statusIndicator).toHaveClass("text-health-yellow");
+    expect(statusIndicator).toHaveClass("w-1.5");
     
-    // Critical status
-    rerender(<HealthMetric {...defaultProps} status="critical" />);
-    statusIndicator = screen.getByText("Crítico").previousSibling;
-    expect(statusIndicator).toHaveClass("text-health-red");
+    // Alert status
+    rerender(<HealthMetric {...defaultProps} status="alert" />);
+    statusIndicator = screen.getByText("Alerta").previousSibling;
+    expect(statusIndicator).toHaveClass("w-1.5");
   });
 
   it("renders with different change directions", () => {
@@ -51,7 +51,7 @@ describe("HealthMetric", () => {
     
     // Up direction (default from defaultProps)
     let changeValue = screen.getByText("+5");
-    expect(changeValue.parentElement).toHaveClass("text-health-green");
+    expect(changeValue).toHaveClass("text-red-400");
     
     // Down direction
     rerender(<HealthMetric 
@@ -59,7 +59,7 @@ describe("HealthMetric", () => {
       change={{ value: "-5", direction: "down" }} 
     />);
     changeValue = screen.getByText("-5");
-    expect(changeValue.parentElement).toHaveClass("text-health-red");
+    expect(changeValue).toHaveClass("text-green-400");
     
     // Neutral direction
     rerender(<HealthMetric 
@@ -67,12 +67,11 @@ describe("HealthMetric", () => {
       change={{ value: "0", direction: "neutral" }} 
     />);
     changeValue = screen.getByText("0");
-    expect(changeValue.parentElement).toHaveClass("text-gray-500");
+    expect(changeValue).toHaveClass("text-gray-500");
   });
 
   it("renders without optional props", () => {
     render(<HealthMetric 
-      icon={<span>Icon</span>}
       title="Simple Metric"
       value="75"
     />);

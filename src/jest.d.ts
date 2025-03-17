@@ -9,7 +9,7 @@ import '@testing-library/jest-dom';
 declare global {
   namespace jest {
     // Base interface with common matchers for any type
-    interface Matchers<R, T = any> {
+    interface Matchers<R> {
       // DOM Testing Library matchers
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
@@ -26,39 +26,6 @@ declare global {
       toContainHTML(html: string): R;
       toHaveFocus(): R;
       toHaveFormValues(values: Record<string, any>): R;
-    }
-    
-    // Explicitly extend matchers for various DOM element types
-    interface Matchers<R, T extends HTMLElement | Node | ChildNode> {
-      toBeInTheDocument(): R;
-      toHaveTextContent(text: string | RegExp): R;
-      toHaveClass(className: string): R;
-      toHaveStyle(css: Record<string, any>): R;
-      toBeVisible(): R;
-      toBeDisabled(): R;
-      toBeEnabled(): R;
-    }
-    
-    // For JestMatchers (used in some test functions)
-    interface JestMatchers<T> {
-      toBeInTheDocument(): T;
-      toHaveTextContent(text: string | RegExp): T;
-      toHaveClass(className: string): T;
-      toHaveStyle(css: Record<string, any>): T;
-      toBeVisible(): T;
-      toBeDisabled(): T;
-      toBeEnabled(): T;
-    }
-
-    // For asymmetric matchers
-    interface AsymmetricMatchers {
-      toBeInTheDocument(): void;
-      toHaveTextContent(text: string | RegExp): void;
-      toHaveClass(className: string): void;
-      toHaveStyle(css: Record<string, any>): void;
-      toBeVisible(): void;
-      toBeDisabled(): void;
-      toBeEnabled(): void;
     }
   }
 }
