@@ -5,4 +5,11 @@
 // Import @testing-library/jest-dom to add custom matchers
 import '@testing-library/jest-dom';
 
+// Explicitly extend expect with jest-dom matchers
+import { expect } from '@jest/globals';
+import * as matchers from '@testing-library/jest-dom/matchers';
+
+// Extend Jest's expect
+expect.extend(matchers);
+
 // Add any global setup for tests here
