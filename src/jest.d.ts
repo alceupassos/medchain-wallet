@@ -1,6 +1,5 @@
 
 /// <reference types="jest" />
-/// <reference types="@testing-library/jest-dom" />
 
 // Import the matchers to make sure they're included
 import '@testing-library/jest-dom';
