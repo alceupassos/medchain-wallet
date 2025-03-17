@@ -1,5 +1,6 @@
 
 /// <reference types="vite/client" />
+/// <reference types="@testing-library/jest-dom" />
 
-// Required for module augmentation
+// Make this file a module
 export {};

@@ -2,28 +2,32 @@
 /// <reference types="jest" />
 /// <reference types="@testing-library/jest-dom" />
 
-// Add missing type definitions for Jest DOM matchers
+// This type definition file ensures TypeScript recognizes the custom matchers
+// added by @testing-library/jest-dom
+declare namespace jest {
+  interface Matchers<R, T> {
+    toBeInTheDocument(): R;
+    toHaveTextContent(text: string | RegExp): R;
+    toHaveClass(className: string): R;
+    toBeVisible(): R;
+    toBeDisabled(): R;
+    toBeEnabled(): R;
+    toBeChecked(): R;
+    toHaveAttribute(attr: string, value?: string | RegExp): R;
+    toHaveValue(value: string | string[] | number | null): R;
+    toBeEmpty(): R;
+    toHaveStyle(css: Record<string, any>): R;
+    toContainElement(element: HTMLElement | null): R;
+    toContainHTML(html: string): R;
+    toHaveFocus(): R;
+    toHaveFormValues(values: Record<string, any>): R;
+  }
+}
+
+// Add global augmentation for @testing-library/jest-dom
 declare global {
   namespace jest {
-    interface AsymmetricMatchers {
-      toBeInTheDocument(): void;
-      toHaveTextContent(text: string | RegExp): void;
-      toHaveClass(className: string): void;
-      toBeVisible(): void;
-      toBeDisabled(): void;
-      toBeEnabled(): void;
-      toBeChecked(): void;
-      toHaveAttribute(attr: string, value?: string | RegExp): void;
-      toHaveValue(value: string | string[] | number | null): void;
-      toBeEmpty(): void;
-      toHaveStyle(css: Record<string, any>): void;
-      toContainElement(element: HTMLElement | null): void;
-      toContainHTML(html: string): void;
-      toHaveFocus(): void;
-      toHaveFormValues(values: Record<string, any>): void;
-    }
-
-    interface Matchers<R, T = any> {
+    interface Matchers<R, T = {}> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveClass(className: string): R;
@@ -43,5 +47,4 @@ declare global {
   }
 }
 
-// To make this file a module
 export {};

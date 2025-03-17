@@ -74,13 +74,11 @@ describe("HealthMetric", () => {
     render(<HealthMetric 
       title="Simple Metric"
       value="75"
-      unit=""
-      status="normal"
     />);
     
     expect(screen.getByText("Simple Metric")).toBeInTheDocument();
     expect(screen.getByText("75")).toBeInTheDocument();
-    expect(screen.getByText("Normal")).toBeInTheDocument(); // Default status
-    expect(screen.queryByText("+5")).not.toBeInTheDocument(); // No change info
+    expect(screen.getByText("Normal")).toBeInTheDocument();
+    expect(screen.queryByText("+5")).not.toBeInTheDocument();
   });
 });
