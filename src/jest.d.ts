@@ -56,8 +56,12 @@ declare global {
       toHaveTextContent(text: string | RegExp): void;
       toHaveClass(className: string): void;
       toHaveStyle(css: Record<string, any>): void;
+      toBeVisible(): void;
+      toBeDisabled(): void;
+      toBeEnabled(): void;
     }
   }
 }
 
+// To make this file a module
 export {};

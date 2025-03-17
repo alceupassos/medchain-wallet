@@ -50,6 +50,17 @@ declare global {
       toBeDisabled(): T;
       toBeEnabled(): T;
     }
+    
+    // Add asymmetric matchers
+    interface AsymmetricMatchers {
+      toBeInTheDocument(): void;
+      toHaveTextContent(text: string | RegExp): void;
+      toHaveClass(className: string): void;
+      toHaveStyle(css: Record<string, any>): void;
+      toBeVisible(): void;
+      toBeDisabled(): void;
+      toBeEnabled(): void;
+    }
   }
 }
 

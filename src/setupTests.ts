@@ -6,7 +6,7 @@
 import '@testing-library/jest-dom';
 
 // Import needed testing libraries
-import { expect } from '@jest/globals';
+import { expect, jest } from '@jest/globals';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { configure } from '@testing-library/react';
 
@@ -19,11 +19,9 @@ configure({
 });
 
 // Make sure the global expect includes jest-dom matchers
-// Properly defining the global expect without redeclaration
+// Use correct typings for global namespace
 declare global {
-  namespace jest {
-    interface Expect {
-      (actual: any): any;
-    }
-  }
+  // Use a var declaration which doesn't conflict with the imported expect
+  var expect: typeof expect;
 }
+
